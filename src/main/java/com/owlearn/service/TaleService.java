@@ -4,6 +4,7 @@ import com.owlearn.dto.TaleDto;
 
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
+import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface TaleService {
 
     // 동화를 생성하고, 생성된 동화의 ID를 반환
-    Long createTale(TaleCreateRequestDto request);
+    TaleResponseDto createTale(TaleCreateRequestDto request);
 
     // 특정 ID에 해당하는 동화 상세 정보를 반환
     TaleDetailResponseDto getTale(Long taleId);

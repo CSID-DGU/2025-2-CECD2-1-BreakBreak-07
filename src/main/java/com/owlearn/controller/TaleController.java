@@ -35,9 +35,8 @@ public class TaleController {
      * @return 생성된 동화의 ID를 담은 응답 DTO
      */
     @PostMapping
-    public ResponseEntity<TaleResponseDto> createTale(@RequestBody TaleCreateRequestDto request) {
-        Long taleId = taleService.createTale(request);
-        return ResponseEntity.ok(new TaleResponseDto(taleId));
+    public ResponseDto<TaleResponseDto> createTale(@RequestBody TaleCreateRequestDto request) {
+        return new ResponseDto<>(taleService.createTale(request));
     }
 
     /**

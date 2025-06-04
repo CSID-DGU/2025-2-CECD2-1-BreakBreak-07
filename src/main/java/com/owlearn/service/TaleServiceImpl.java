@@ -3,6 +3,7 @@ package com.owlearn.service;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
+import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
 import com.owlearn.entity.Quiz;
 import com.owlearn.entity.Tale;
@@ -31,7 +32,7 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
-    public Long createTale(TaleCreateRequestDto request) {
+    public TaleResponseDto createTale(TaleCreateRequestDto request) {
         // FastAPI 호출해서 동화 생성
         String fastApiUrl = "http://localhost:8000/api/tales";
         TaleDto apiResponse = restTemplate.postForObject(fastApiUrl, request, TaleDto.class);
@@ -59,7 +60,9 @@ public class TaleServiceImpl implements TaleService {
                 .build();
 
         // DB 저장된 내용 반환
-        return taleRepository.save(tale).getId();
+        return TaleResponseDto.builder()
+                .id(tale.getId())
+                .build();
     }
 
     @Override
