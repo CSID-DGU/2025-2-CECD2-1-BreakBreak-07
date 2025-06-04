@@ -4,13 +4,11 @@ import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 
 public class UserController {
     private final UserService userService;
@@ -23,5 +21,18 @@ public class UserController {
             @RequestBody SignupRequestDto signupRequestDto
     ){
         return new ResponseDto<>(userService.signup(signupRequestDto));
+    }
+    @PutMapping("/modify")
+    public ResponseDto<NotifyResponseDto> modify(
+            @RequestBody SignupRequestDto signupRequestDto
+    ){
+        return new ResponseDto<>(userService.modify(signupRequestDto));
+    }
+
+    @GetMapping("/checkId")
+    public ResponseDto<NotifyResponseDto> checkId(
+            @RequestParam String userId
+    ){
+        return new ResponseDto<>(userService.checkId(userId));
     }
 }

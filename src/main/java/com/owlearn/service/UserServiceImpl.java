@@ -31,5 +31,27 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    public NotifyResponseDto modify(SignupRequestDto signupRequestDto) {
+        if (userRepository.findByUserId(signupRequestDto.getUserId()).isPresent())
+            throw new ApiException(ErrorDefine.USER_EXIST);
+        User user = User.builder()
+                .userId(signupRequestDto.getUserId())
+                .name(signupRequestDto.getName())
+                .password(signupRequestDto.getPassword())
+                .build();
+        userRepository.save(user);
+        return NotifyResponseDto.builder()
+                .message("회원정보가 수정되었습니다")
+                .build();
+    }
+
+    public NotifyResponseDto checkId(String userId) {
+        boolean exists = userRepository.findByUserId(userId).isPresent();
+        String message = exists ? "중복된 아이디입니다." : "사용가능한 아이디입니다.";
+        return NotifyResponseDto.builder()
+                .message(message)
+                .build();
+    }
+
 
 }
