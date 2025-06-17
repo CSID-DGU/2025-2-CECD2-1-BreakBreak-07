@@ -1,4 +1,4 @@
-package com.owlearn.dto;
+package com.owlearn.dto.response;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaleResponse {
+public class TaleResponseDto {
 
     private Long id; // 생성된 동화의 DB 기본키 (ID)
 }

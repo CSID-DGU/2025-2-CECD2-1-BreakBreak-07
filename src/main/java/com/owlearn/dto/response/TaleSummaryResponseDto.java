@@ -1,4 +1,4 @@
-package com.owlearn.dto;
+package com.owlearn.dto.response;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaleSummaryResponse {
+public class TaleSummaryResponseDto {
 
     private Long id;
     private String title;

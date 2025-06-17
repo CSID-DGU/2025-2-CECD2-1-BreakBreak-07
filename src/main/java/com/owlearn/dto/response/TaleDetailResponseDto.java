@@ -1,4 +1,4 @@
-package com.owlearn.dto;
+package com.owlearn.dto.response;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaleDetailResponse {
+public class TaleDetailResponseDto {
 
     private String title; // 동화 제목
     private List<String> contents; // 동화 내용(문장 혹은 페이지별 텍스트 리스트)

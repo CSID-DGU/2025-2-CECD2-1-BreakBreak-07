@@ -1,6 +1,9 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.*;
+import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.response.TaleDetailResponseDto;
+import com.owlearn.dto.response.TaleSummaryResponseDto;
 import com.owlearn.entity.Quiz;
 import com.owlearn.entity.Tale;
 import com.owlearn.repository.TaleRepository;
@@ -28,7 +31,7 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
-    public Long createTale(TaleCreateRequest request) {
+    public Long createTale(TaleCreateRequestDto request) {
         // FastAPI 호출해서 동화 생성
         String fastApiUrl = "http://localhost:8000/api/tales";
         TaleDto apiResponse = restTemplate.postForObject(fastApiUrl, request, TaleDto.class);
@@ -60,9 +63,9 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
-    public TaleDetailResponse getTale(Long taleId) {
+    public TaleDetailResponseDto getTale(Long taleId) {
         Tale tale = taleRepository.findById(taleId).orElseThrow();
-        return new TaleDetailResponse(tale.getTitle(), tale.getContents(), tale.getImageUrls());
+        return new TaleDetailResponseDto(tale.getTitle(), tale.getContents(), tale.getImageUrls());
     }
 
     @Override
@@ -85,9 +88,9 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
-    public List<TaleSummaryResponse> getAllTales() {
+    public List<TaleSummaryResponseDto> getAllTales() {
         return taleRepository.findAll().stream()
-                .map(tale -> new TaleSummaryResponse(tale.getId(), tale.getTitle()))
+                .map(tale -> new TaleSummaryResponseDto(tale.getId(), tale.getTitle()))
                 .collect(Collectors.toList());
     }
 

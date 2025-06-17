@@ -2,8 +2,8 @@ package com.owlearn;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owlearn.controller.TaleController;
-import com.owlearn.dto.TaleCreateRequest;
-import com.owlearn.dto.TaleDetailResponse;
+import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.service.TaleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class TaleControllerTest {
     @DisplayName("동화 생성 요청이 성공하면 id를 반환한다")
     void testCreateTale() throws Exception {
         // given
-        TaleCreateRequest request = TaleCreateRequest.builder()
+        TaleCreateRequestDto request = TaleCreateRequestDto.builder()
                 .topic("공룡")
                 .style("픽사 스타일")
                 .age(6)
@@ -57,7 +57,7 @@ public class TaleControllerTest {
     @DisplayName("동화 조회 요청이 성공하면 내용과 이미지 URL을 반환한다")
     void testGetTale() throws Exception {
         // given
-        TaleDetailResponse response = TaleDetailResponse.builder()
+        TaleDetailResponseDto response = TaleDetailResponseDto.builder()
                 .title("공룡 이야기")
                 .contents(Arrays.asList("내용1", "내용2", "내용3"))
                 .imageUrls(Arrays.asList("image1.jpg", "image2.jpg", "image3.jpg"))

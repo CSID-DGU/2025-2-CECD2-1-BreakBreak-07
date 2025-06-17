@@ -4,6 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owlearn.dto.*;
+import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.response.TaleDetailResponseDto;
+import com.owlearn.dto.response.TaleResponseDto;
+import com.owlearn.dto.response.TaleSummaryResponseDto;
 import com.owlearn.service.TaleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +34,9 @@ public class TaleController {
      * @return 생성된 동화의 ID를 담은 응답 DTO
      */
     @PostMapping
-    public ResponseEntity<TaleResponse> createTale(@RequestBody TaleCreateRequest request) {
+    public ResponseEntity<TaleResponseDto> createTale(@RequestBody TaleCreateRequestDto request) {
         Long taleId = taleService.createTale(request);
-        return ResponseEntity.ok(new TaleResponse(taleId));
+        return ResponseEntity.ok(new TaleResponseDto(taleId));
     }
 
     /**
@@ -41,7 +45,7 @@ public class TaleController {
      * @return 동화 상세 정보를 담은 응답 DTO
      */
     @GetMapping("/{taleId}")
-    public ResponseEntity<TaleDetailResponse> getTale(@PathVariable Long taleId) {
+    public ResponseEntity<TaleDetailResponseDto> getTale(@PathVariable Long taleId) {
         return ResponseEntity.ok(taleService.getTale(taleId));
     }
 
@@ -54,7 +58,9 @@ public class TaleController {
      * @return 생성된 동화의 ID를 포함한 응답 DTO
      */
     @PostMapping(value = "/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<TaleResponse> insertTale(
+
+    public ResponseEntity<TaleResponseDto> insertTale(
+
             @RequestParam String title,
             @RequestParam List<String> contents,
             @RequestParam String quizzesJson,
@@ -84,7 +90,8 @@ public class TaleController {
         // DB에 저장
         Long taleId = taleService.insertTale(taleDto);
 
-        return ResponseEntity.ok(new TaleResponse(taleId));
+        return ResponseEntity.ok(new TaleResponseDto(taleId));
+
     }
 
     /**
@@ -92,7 +99,7 @@ public class TaleController {
      * @return 모든 동화의 상세 정보를 담은 리스트 응답 DTO
      */
     @GetMapping
-    public ResponseEntity<List<TaleSummaryResponse>> getAllTales() {
+    public ResponseEntity<List<TaleSummaryResponseDto>> getAllTales() {
         return ResponseEntity.ok(taleService.getAllTales());
     }
 
@@ -104,7 +111,7 @@ public class TaleController {
      */
     @PutMapping("/{taleId}")
     public ResponseEntity<TaleDto> updateTale(@PathVariable Long taleId,
-                                                         @RequestBody TaleDto request) {
+                                              @RequestBody TaleDto request) {
         return ResponseEntity.ok(taleService.updateTale(taleId, request));
     }
 
