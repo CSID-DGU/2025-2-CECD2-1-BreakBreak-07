@@ -10,5 +10,6 @@ import lombok.*;
 
 public class SignupRequestDto {
     private String userId;
+    private String name;
     private String password;
 }

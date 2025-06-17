@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
@@ -45,8 +46,8 @@ public class TaleController {
      * @return 동화 상세 정보를 담은 응답 DTO
      */
     @GetMapping("/{taleId}")
-    public ResponseEntity<TaleDetailResponseDto> getTale(@PathVariable Long taleId) {
-        return ResponseEntity.ok(taleService.getTale(taleId));
+    public ResponseDto<TaleDetailResponseDto> getTale(@PathVariable Long taleId) {
+        return new ResponseDto<>(taleService.getTale(taleId));
     }
 
     /**

@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
             throw new ApiException(ErrorDefine.USER_EXIST);
         User user = User.builder()
                 .userId(signupRequestDto.getUserId())
+                .name(signupRequestDto.getName())
                 .password(signupRequestDto.getPassword())
                 .build();
         userRepository.save(user);
