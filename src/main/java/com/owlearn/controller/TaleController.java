@@ -58,7 +58,9 @@ public class TaleController {
      * @return 생성된 동화의 ID를 포함한 응답 DTO
      */
     @PostMapping(value = "/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
     public ResponseEntity<TaleResponseDto> insertTale(
+
             @RequestParam String title,
             @RequestParam List<String> contents,
             @RequestParam String quizzesJson,
@@ -89,6 +91,7 @@ public class TaleController {
         Long taleId = taleService.insertTale(taleDto);
 
         return ResponseEntity.ok(new TaleResponseDto(taleId));
+
     }
 
     /**
