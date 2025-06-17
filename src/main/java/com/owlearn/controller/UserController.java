@@ -4,7 +4,6 @@ import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.service.UserService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
