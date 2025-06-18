@@ -9,11 +9,15 @@ import com.owlearn.entity.Quiz;
 import com.owlearn.entity.Tale;
 import com.owlearn.repository.TaleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -138,9 +142,24 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
+    @Transactional
     public void deleteTale(Long taleId) {
         Tale tale = taleRepository.findById(taleId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 동화가 존재하지 않습니다."));
+
+        // 이미지 파일 삭제
+        List<String> imageUrls = tale.getImageUrls();
+        for (String imageUrl : imageUrls) {
+            String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+            Path path = Paths.get("/home/ubuntu/static/", fileName);
+
+            try {
+                Files.deleteIfExists(path); // 존재할 때만 삭제
+            } catch (IOException e) {
+                System.err.println("파일 삭제 실패: " + path + " - " + e.getMessage());
+            }
+        }
+
         taleRepository.delete(tale);
     }
 
