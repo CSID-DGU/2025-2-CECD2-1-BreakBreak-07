@@ -17,7 +17,7 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
+        registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:/home/ubuntu/static/");
     }
     @Override

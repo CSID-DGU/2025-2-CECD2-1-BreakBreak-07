@@ -34,3 +34,4 @@ public interface TaleService {
     // images 파일들을 서버 static 폴더에 저장하고 저장된 url 리스트 반환
     List<String> saveImages(List<MultipartFile> images);
 
+}
