@@ -30,9 +30,20 @@ public class QuizController {
         return ResponseEntity.ok(quizzes);
     }
 
+    // 정답 제출
     @PostMapping("/submit")
-    public ResponseEntity<QuizAnswerResponseDto> submitQuizAnswer(@RequestBody QuizAnswerRequestDto request) {
-        QuizAnswerResponseDto response = quizService.checkAnswer(request);
+    public ResponseEntity<QuizAnswerResponseDto> submitAnswer(@RequestBody QuizAnswerRequestDto request) {
+        QuizAnswerResponseDto response = quizService.submitAnswer(request);
+        return ResponseEntity.ok(response);
+    }
+
+    // 정답 여부 조회
+    @GetMapping("/{userId}/{taleId}/{questionNumber}/answer")
+    public ResponseEntity<QuizAnswerResponseDto> getAnswer(
+            @PathVariable Long userId,
+            @PathVariable Long taleId,
+            @PathVariable int questionNumber) {
+        QuizAnswerResponseDto response = quizService.getSubmission(userId, taleId, questionNumber);
         return ResponseEntity.ok(response);
     }
 }

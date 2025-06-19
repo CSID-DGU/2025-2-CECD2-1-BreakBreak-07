@@ -11,4 +11,5 @@ public class QuizAnswerRequestDto {
     private Long taleId;
     private int questionNumber;
     private int selectedIndex;
+    private Long userId;
 }
