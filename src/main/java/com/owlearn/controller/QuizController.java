@@ -1,12 +1,11 @@
 package com.owlearn.controller;
 
 import com.owlearn.dto.QuizDto;
+import com.owlearn.dto.request.QuizAnswerRequestDto;
+import com.owlearn.dto.response.QuizAnswerResponseDto;
 import com.owlearn.service.QuizService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +28,11 @@ public class QuizController {
     public ResponseEntity<List<QuizDto>> getQuizzesByTale(@PathVariable Long taleId) {
         List<QuizDto> quizzes = quizService.getQuizzesByTaleId(taleId);
         return ResponseEntity.ok(quizzes);
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<QuizAnswerResponseDto> submitQuizAnswer(@RequestBody QuizAnswerRequestDto request) {
+        QuizAnswerResponseDto response = quizService.checkAnswer(request);
+        return ResponseEntity.ok(response);
     }
 }

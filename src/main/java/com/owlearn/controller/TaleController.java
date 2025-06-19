@@ -61,10 +61,10 @@ public class TaleController {
 
     public ResponseEntity<TaleResponseDto> insertTale(
 
-            @RequestParam String title,
-            @RequestParam List<String> contents,
-            @RequestParam String quizzesJson,
-            @RequestPart("images") List<MultipartFile> images) {
+        @RequestParam String title,
+        @RequestParam List<String> contents,
+        @RequestParam String quizzesJson,
+        @RequestPart("images") List<MultipartFile> images) {
 
         // images 파일들을 서버 static 폴더에 저장하고 저장된 url 리스트 생성
         List<String> savedImageUrls = taleService.saveImages(images);

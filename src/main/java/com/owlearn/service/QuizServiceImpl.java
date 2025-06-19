@@ -1,6 +1,9 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.QuizDto;
+import com.owlearn.dto.request.QuizAnswerRequestDto;
+import com.owlearn.dto.response.QuizAnswerResponseDto;
+import com.owlearn.entity.Quiz;
 import com.owlearn.repository.QuizRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +30,15 @@ public class QuizServiceImpl implements QuizService {
                         q.getExplanation()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public QuizAnswerResponseDto checkAnswer(QuizAnswerRequestDto request) {
+        Quiz quiz = quizRepository.findByTaleIdAndQuestionNumber(request.getTaleId(), request.getQuestionNumber())
+                .orElseThrow(() -> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다."));
+
+        boolean isCorrect = (quiz.getAnswerIndex() == request.getSelectedIndex());
+
+        return new QuizAnswerResponseDto(isCorrect, quiz.getAnswerIndex(), quiz.getExplanation());
     }
 }
