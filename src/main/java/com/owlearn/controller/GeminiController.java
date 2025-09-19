@@ -4,6 +4,7 @@ import com.owlearn.dto.request.GeminiRequestDto;
 import com.owlearn.service.GeminiService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,9 +18,10 @@ public class GeminiController {
         this.service = service;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>> generate(@RequestBody GeminiRequestDto req) {
-        List<String> urls = service.generateImages(req.getPrompt());
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> generate(@ModelAttribute GeminiRequestDto request) {
+        List<String> urls = service.generateImages(request);
         return ResponseEntity.ok(urls);
     }
 

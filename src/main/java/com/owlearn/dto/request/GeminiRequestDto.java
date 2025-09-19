@@ -1,6 +1,7 @@
 package com.owlearn.dto.request;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -9,4 +10,5 @@ import lombok.*;
 @Builder
 public class GeminiRequestDto {
     String prompt;
+    private MultipartFile refImage;
 }
