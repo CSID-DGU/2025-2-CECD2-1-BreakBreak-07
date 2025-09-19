@@ -27,6 +27,7 @@ dependencies {
 	// 웹/입력 검증
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
 
 	// JPA (Spring Data JPA)
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -47,6 +48,10 @@ dependencies {
 	// 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // WebClient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 
 	/*
     // PostgreSQL 사용 시 아래 의존성 추가
