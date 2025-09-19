@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BananaRequestDto {
+public class GeminiRequestDto {
     String prompt;
 }

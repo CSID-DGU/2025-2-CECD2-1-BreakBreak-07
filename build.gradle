@@ -49,8 +49,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // WebClient
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // 구글 SDK
+    implementation "com.google.genai:google-genai:1.16.0"
 
 
 	/*
