@@ -68,6 +68,7 @@ public class GeminiService {
         GenerateImagesConfig cfg = GenerateImagesConfig.builder()
                 .outputMimeType("image/png")
                 .includeSafetyAttributes(true)
+                .numberOfImages(1)
                 .build();
 
         GenerateImagesResponse res = client.models.generateImages(imageModel, prompt, cfg);
