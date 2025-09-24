@@ -26,7 +26,11 @@ public class AppConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://dguowlearn.netlify.app",
                         "http://localhost:3000",
                         "http://52.79.239.102:8080")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .exposedHeaders("Location")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
 

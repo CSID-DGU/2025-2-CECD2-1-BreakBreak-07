@@ -4,7 +4,6 @@ import com.owlearn.dto.request.GeminiRequestDto;
 import com.owlearn.service.GeminiService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
