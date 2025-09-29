@@ -38,7 +38,7 @@ public class TaleServiceImpl implements TaleService {
     @Override
     public TaleResponseDto createTale(TaleCreateRequestDto request) {
         // FastAPI 호출해서 동화 생성
-        String fastApiUrl = "http://localhost:8000/api/tales";
+        String fastApiUrl = "http://localhost:8000/ai/tales";
         TaleDto apiResponse = restTemplate.postForObject(fastApiUrl, request, TaleDto.class);
 
         if (apiResponse == null) {
