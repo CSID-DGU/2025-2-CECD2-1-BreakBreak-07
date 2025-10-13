@@ -25,9 +25,8 @@ public class GeminiService {
     private final String FastAPIUrl = "http://localhost:8000/ai/image-generate";
 
     public GeminiService() {
-        // 로컬: src/main/resources/static/images
-        // 배포 시: /home/ubuntu/static/
-        this.saveDir = Paths.get("/home/ubuntu/static/");
+        this.saveDir = Paths.get("/home/ubuntu/static/"); // 배포
+        // this.saveDir = Paths.get("src/main/resources/static/images"); // 로컬
         try {
             Files.createDirectories(this.saveDir);
         } catch (IOException e) {
@@ -46,8 +45,8 @@ public class GeminiService {
             throw new IllegalArgumentException("refImage is required");
         }
 
-        // 1) 참조 이미지 저장 → 접근 URL 생성 (/images/xxx.png)
-        String refImgUrl = saveImage(refImage.getBytes());
+        // 1) 참조 이미지 저장 → 접근 URL 생성
+        String refImgUrl = "http://localhost:8000" + saveImage(refImage.getBytes());
 
         // 2) 프롬프트 분할
         List<String> prompts = promptSplit(prompt);
