@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CharacterResponseDto getCharacter(String userId) {
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApiException(ErrorDefine.USER_EXIST));
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
         return CharacterResponseDto.builder()
                 .imageUrl(user.getCharacterImageUrl())
                 .build();
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CharacterResponseDto uploadOrUpdateCharacter(String userId, MultipartFile image) {
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApiException(ErrorDefine.USER_EXIST));
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
 
         try {
             String url = imageStorage.saveUserCharacterImage(userId, image);
