@@ -1,10 +1,13 @@
 package com.owlearn.controller;
 
 import com.owlearn.dto.request.SignupRequestDto;
+import com.owlearn.dto.response.CharacterResponseDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.service.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -33,5 +36,18 @@ public class UserController {
             @RequestParam String userId
     ){
         return new ResponseDto<>(userService.checkId(userId));
+    }
+
+    @GetMapping("/character")
+    public ResponseDto<CharacterResponseDto> getCharacter(@RequestParam String userId) {
+        return new ResponseDto<>(userService.getCharacter(userId));
+    }
+
+    @PostMapping(value = "/character", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseDto<CharacterResponseDto> uploadCharacter(
+            @RequestParam String userId,
+            @RequestPart("image") MultipartFile image
+    ) {
+        return new ResponseDto<>(userService.uploadOrUpdateCharacter(userId, image));
     }
 }
