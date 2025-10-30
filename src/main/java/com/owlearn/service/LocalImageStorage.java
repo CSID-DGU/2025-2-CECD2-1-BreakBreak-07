@@ -13,8 +13,6 @@ import java.util.UUID;
 @Component
 public class LocalImageStorage {
 
-    private String imageBaseUrl;
-
     public String saveUserCharacterImage(String userId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("빈 파일입니다.");
@@ -38,6 +36,6 @@ public class LocalImageStorage {
         }
 
         // 접근 가능한 URL 생성
-        return imageBaseUrl + "/characters/" + filename;
+        return "/images/characters/" + filename;
     }
 }

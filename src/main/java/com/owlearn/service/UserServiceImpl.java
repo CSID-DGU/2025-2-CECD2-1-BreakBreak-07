@@ -63,8 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CharacterResponseDto getCharacter(String userId) {
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_EXIST));
         return CharacterResponseDto.builder()
                 .exists(user.getCharacterImageUrl() != null)
                 .imageUrl(user.getCharacterImageUrl())
@@ -74,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CharacterResponseDto uploadOrUpdateCharacter(String userId, MultipartFile image) {
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_EXIST));
 
         try {
             String url = imageStorage.saveUserCharacterImage(userId, image);
