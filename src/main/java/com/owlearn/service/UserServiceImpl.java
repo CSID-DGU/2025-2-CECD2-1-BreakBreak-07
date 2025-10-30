@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_EXIST));
         return CharacterResponseDto.builder()
-                .exists(user.getCharacterImageUrl() != null)
                 .imageUrl(user.getCharacterImageUrl())
                 .build();
     }
@@ -81,7 +80,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return CharacterResponseDto.builder()
-                    .exists(true)
                     .imageUrl(url)
                     .build();
         } catch (IOException e) {
