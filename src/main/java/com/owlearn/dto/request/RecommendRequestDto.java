@@ -11,7 +11,7 @@ import java.util.List;
 public class RecommendRequestDto {
     private Long userId;
     private String query;
-    private Integer age;  // 예: 7세
+    private Integer age;
     private List<String> themes;
 
     @Builder.Default

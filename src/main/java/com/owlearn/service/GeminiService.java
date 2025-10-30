@@ -46,7 +46,7 @@ public class GeminiService {
         }
 
         // 1) 참조 이미지 저장 → 접근 URL 생성
-        String refImgUrl = "http://localhost:8000" + saveImage(refImage.getBytes());
+        String refImgUrl = saveImage(refImage.getBytes());
 
         // 2) 프롬프트 분할
         List<String> prompts = promptSplit(prompt);
