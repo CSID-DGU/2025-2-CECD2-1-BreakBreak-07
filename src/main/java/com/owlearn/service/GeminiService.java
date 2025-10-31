@@ -1,6 +1,9 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.request.GeminiRequestDto;
+import com.owlearn.entity.Quiz;
+import com.owlearn.entity.Tale;
+import com.owlearn.repository.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -14,17 +17,16 @@ import java.nio.file.*;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class GeminiService {
-
-    private final RestTemplate restTemplate = new RestTemplate();
 
     private final Path saveDir;
 
+    private final TaleRepository taleRepository;
+    private final RestTemplate restTemplate;
     // FastAPI 엔드포인트
     private final String FastAPIUrl = "http://localhost:8000/ai/image-generate";
 
-    public GeminiService() {
+    public GeminiService(TaleRepository taleRepository, RestTemplate restTemplate) {
         this.saveDir = Paths.get("/home/ubuntu/static/"); // 배포
         // this.saveDir = Paths.get("src/main/resources/static/images"); // 로컬
         try {
@@ -32,6 +34,9 @@ public class GeminiService {
         } catch (IOException e) {
             throw new RuntimeException("이미지 저장 폴더 생성 실패", e);
         }
+
+        this.taleRepository = taleRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<String> generateImages(GeminiRequestDto request) throws IOException {
@@ -82,6 +87,16 @@ public class GeminiService {
         for (byte[] bytes : images) {
             imageUrls.add(saveImage(bytes));
         }
+
+        // 5) DB에 동화 저장
+        Tale tale = Tale.builder()
+                .contents(prompts)
+                .imageUrls(imageUrls)
+                .build();
+
+        Tale saved = taleRepository.save(tale);
+        saved.setTitle("Tale-" + saved.getId());
+        taleRepository.save(saved);
 
         return imageUrls;
     }
