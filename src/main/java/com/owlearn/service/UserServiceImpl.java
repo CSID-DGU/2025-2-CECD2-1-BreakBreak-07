@@ -2,10 +2,15 @@ package com.owlearn.service;
 
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.CharacterResponseDto;
+import com.owlearn.dto.response.ChildStatusResponseDto;
 import com.owlearn.dto.response.NotifyResponseDto;
+import com.owlearn.dto.response.ResponseDto;
+import com.owlearn.entity.Child;
 import com.owlearn.entity.User;
 import com.owlearn.exception.ApiException;
 import com.owlearn.exception.ErrorDefine;
+import com.owlearn.repository.ChildRepository;
+import com.owlearn.repository.TaleRepository;
 import com.owlearn.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,10 +22,14 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final LocalImageStorage imageStorage;
+    private final ChildRepository childRepository;
+    private final TaleRepository taleRepository;
 
-    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage) {
+    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository) {
         this.userRepository = userRepository;
         this.imageStorage = localImageStorage;
+        this.childRepository = childRepository;
+        this.taleRepository = taleRepository;
     }
 
     @Override
@@ -85,6 +94,19 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new RuntimeException("캐릭터 이미지 저장 중 오류가 발생했습니다.", e);
         }
+    }
+
+    public ChildStatusResponseDto getChildStatus(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+        Child child = childRepository.findByUser(user)
+                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
+        Integer taleCount = taleRepository.countByChild(child);
+        return ChildStatusResponseDto.builder()
+                .name(child.getName())
+                .taleCount(taleCount)
+                .prefer(child.getPrefer())
+                .build();
     }
 
 

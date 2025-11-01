@@ -2,6 +2,7 @@ package com.owlearn.controller;
 
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.CharacterResponseDto;
+import com.owlearn.dto.response.ChildStatusResponseDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.service.UserService;
@@ -49,5 +50,10 @@ public class UserController {
             @RequestPart("image") MultipartFile image
     ) {
         return new ResponseDto<>(userService.uploadOrUpdateCharacter(userId, image));
+    }
+
+    @GetMapping("/child")
+    public ResponseDto<ChildStatusResponseDto> getChildStatus(@RequestParam String userId) {
+        return new ResponseDto<>(userService.getChildStatus(userId));
     }
 }

@@ -25,6 +25,10 @@ public class Tale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "child_id")
+    private Child child;
+
     /**
      * 동화 제목
      */
