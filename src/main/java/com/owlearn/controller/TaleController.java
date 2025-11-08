@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.UserTaleRequestDto;
-import com.owlearn.dto.response.ResponseDto;
-import com.owlearn.dto.response.TaleDetailResponseDto;
-import com.owlearn.dto.response.TaleResponseDto;
-import com.owlearn.dto.response.TaleSummaryResponseDto;
+import com.owlearn.dto.response.*;
 import com.owlearn.service.TaleAiService;
 import com.owlearn.service.TaleService;
 import org.springframework.http.MediaType;
@@ -35,13 +32,13 @@ public class TaleController {
 
     // 기존 동화에 이미지 생성
     @PostMapping
-    public ResponseDto<Long> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
+    public ResponseDto<TaleIdResponseDto> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
         return new ResponseDto<>(taleAiService.generateImagesForExistingTale(request));
     }
 
     // 새 동화 생성 + 이미지 생성
     @PostMapping("/generate")
-    public ResponseDto<Long> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
+    public ResponseDto<TaleIdResponseDto> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
         return new ResponseDto<>(taleAiService.createTaleAndGenerateImages(request));
     }
 

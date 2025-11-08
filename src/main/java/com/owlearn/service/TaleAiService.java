@@ -5,6 +5,7 @@ import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.TextGenerateRequestDto;
 import com.owlearn.dto.request.UserTaleRequestDto;
 import com.owlearn.dto.response.ImageGenerateResponseDto;
+import com.owlearn.dto.response.TaleIdResponseDto;
 import com.owlearn.dto.response.TextGenerateResponseDto;
 import com.owlearn.entity.Tale;
 import com.owlearn.repository.TaleRepository;
@@ -54,7 +55,7 @@ public class TaleAiService {
     // =========================
     // 1) 기존 동화에 이미지 생성
     // =========================
-    public Long generateImagesForExistingTale(UserTaleRequestDto req) {
+    public TaleIdResponseDto generateImagesForExistingTale(UserTaleRequestDto req) {
         Tale tale = taleRepository.findById(req.getTaleId())
                 .orElseThrow(() -> new NoSuchElementException("동화가 존재하지 않습니다: id=" + req.getTaleId()));
 
@@ -73,13 +74,13 @@ public class TaleAiService {
         }
         taleRepository.save(tale);
 
-        return tale.getId();
+        return TaleIdResponseDto.builder().taleId(tale.getId()).build();
     }
 
     // =========================
     // 2) 새 동화 생성 + 이미지 생성 (텍스트만 사용)
     // =========================
-    public Long createTaleAndGenerateImages(TaleCreateRequestDto req) {
+    public TaleIdResponseDto createTaleAndGenerateImages(TaleCreateRequestDto req) {
 
         TextGenerateRequestDto payload = TextGenerateRequestDto.builder()
                 .subject(req.getSubject())
@@ -108,7 +109,7 @@ public class TaleAiService {
         tale.setImageUrls(localUrls);
         taleRepository.save(tale);
 
-        return tale.getId();
+        return TaleIdResponseDto.builder().taleId(tale.getId()).build();
     }
 
     // ======== 내부 공통 ========
