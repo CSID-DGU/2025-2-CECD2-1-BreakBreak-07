@@ -35,13 +35,13 @@ public class TaleController {
 
     // 기존 동화에 이미지 생성
     @PostMapping
-    public ResponseDto<TaleDetailResponseDto> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
+    public ResponseDto<Long> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
         return new ResponseDto<>(taleAiService.generateImagesForExistingTale(request));
     }
 
     // 새 동화 생성 + 이미지 생성
     @PostMapping("/generate")
-    public ResponseDto<TaleDetailResponseDto> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
+    public ResponseDto<Long> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
         return new ResponseDto<>(taleAiService.createTaleAndGenerateImages(request));
     }
 
