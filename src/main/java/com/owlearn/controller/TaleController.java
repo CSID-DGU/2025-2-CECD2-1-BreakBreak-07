@@ -5,10 +5,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.request.UserTaleRequestDto;
 import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
+import com.owlearn.service.TaleAiService;
 import com.owlearn.service.TaleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +24,25 @@ import java.util.List;
 public class TaleController {
 
     private final TaleService taleService;
+    private final TaleAiService taleAiService;
     private final ObjectMapper objectMapper;
 
-    public TaleController(TaleService taleService) {
+    public TaleController(TaleService taleService, TaleAiService taleAiService) {
         this.taleService = taleService;
+        this.taleAiService = taleAiService;
         this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * 새로운 동화를 생성하는 API
-     * @param request 동화 생성 요청 DTO
-     * @return 생성된 동화의 ID를 담은 응답 DTO
-     */
+    // 기존 동화에 이미지 생성
     @PostMapping
-    public ResponseDto<TaleResponseDto> createTale(@RequestBody TaleCreateRequestDto request) {
-        return new ResponseDto<>(taleService.createTale(request));
+    public ResponseDto<TaleDetailResponseDto> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
+        return new ResponseDto<>(taleAiService.generateImagesForExistingTale(request));
+    }
+
+    // 새 동화 생성 + 이미지 생성
+    @PostMapping("/generate")
+    public ResponseDto<TaleDetailResponseDto> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
+        return new ResponseDto<>(taleAiService.createTaleAndGenerateImages(request));
     }
 
     /**
