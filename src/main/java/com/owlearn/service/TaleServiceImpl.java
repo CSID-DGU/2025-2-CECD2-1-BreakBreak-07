@@ -47,13 +47,6 @@ public class TaleServiceImpl implements TaleService {
                 .title(request.getTitle())
                 .contents(request.getContents())
                 .imageUrls(request.getImageUrls())
-                .quizzes(request.getQuizzes().stream()
-                        .map(dto -> Quiz.builder()
-                                .question(dto.getQuestion())
-                                .choices(dto.getChoices())
-                                .answerIndex(dto.getAnswerIndex())
-                                .build())
-                        .collect(Collectors.toList()))
                 .build();
 
         Tale saved = taleRepository.save(tale);
@@ -76,34 +69,12 @@ public class TaleServiceImpl implements TaleService {
         tale.setContents(request.getContents());
         tale.setImageUrls(request.getImageUrls());
 
-        // 기존 퀴즈 제거 후 새로 설정
-        tale.getQuizzes().clear();
-        List<Quiz> newQuizzes = request.getQuizzes().stream()
-                .map(dto -> Quiz.builder()
-                        .questionNumber(dto.getQuestionNumber())
-                        .question(dto.getQuestion())
-                        .choices(dto.getChoices())
-                        .answerIndex(dto.getAnswerIndex())
-                        .explanation(dto.getExplanation())
-                        .build())
-                .toList();
-        tale.getQuizzes().addAll(newQuizzes);
-
         Tale updated = taleRepository.save(tale);
 
         return TaleDto.builder()
                 .title(updated.getTitle())
                 .contents(updated.getContents())
                 .imageUrls(updated.getImageUrls())
-                .quizzes(updated.getQuizzes().stream()
-                        .map(q -> QuizDto.builder()
-                                .questionNumber(q.getQuestionNumber())
-                                .question(q.getQuestion())
-                                .choices(q.getChoices())
-                                .answerIndex(q.getAnswerIndex())
-                                .explanation(q.getExplanation())
-                                .build())
-                        .collect(Collectors.toList()))
                 .build();
     }
 

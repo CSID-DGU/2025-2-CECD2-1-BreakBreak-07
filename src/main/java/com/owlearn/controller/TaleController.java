@@ -56,7 +56,6 @@ public class TaleController {
      * 동화 직접 삽입 API (이미지 파일 업로드 포함)
      * @param title 동화 제목
      * @param contents 동화 내용 리스트
-     * @param quizzesJson JSON 문자열
      * @param images 동화에 포함될 이미지 파일들 (multipart/form-data)
      * @return 생성된 동화의 ID를 포함한 응답 DTO
      */
@@ -66,28 +65,16 @@ public class TaleController {
 
         @RequestParam String title,
         @RequestParam List<String> contents,
-        @RequestParam String quizzesJson,
         @RequestPart("images") List<MultipartFile> images) {
 
         // images 파일들을 서버 static 폴더에 저장하고 저장된 url 리스트 생성
         List<String> savedImageUrls = taleService.saveImages(images);
-
-        // quizzesJson을 List<QuizDto>로 변환
-        List<QuizDto> quizzes;
-        try {
-            quizzes = objectMapper.readValue(quizzesJson, new TypeReference<List<QuizDto>>() {});
-        } catch (JsonProcessingException e) {
-            // JSON 파싱 실패
-            e.printStackTrace();
-            throw new RuntimeException("Invalid quizzes JSON format", e);
-        }
 
         // TaleDto 생성
         TaleDto taleDto = TaleDto.builder()
                 .title(title)
                 .contents(contents)
                 .imageUrls(savedImageUrls)
-                .quizzes(quizzes)
                 .build();
 
         // DB에 저장
