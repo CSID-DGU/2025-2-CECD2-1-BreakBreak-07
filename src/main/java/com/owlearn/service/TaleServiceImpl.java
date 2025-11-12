@@ -36,40 +36,6 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
-    public TaleResponseDto createTale(TaleCreateRequestDto request) {
-        // FastAPI 호출해서 동화 생성
-        String fastApiUrl = "http://localhost:8000/ai/tales";
-        TaleDto apiResponse = restTemplate.postForObject(fastApiUrl, request, TaleDto.class);
-
-        if (apiResponse == null) {
-            throw new IllegalStateException("FastAPI 응답이 null입니다");
-        }
-
-        // DTO를 엔티티로 변환
-        List<Quiz> quizzes = Optional.ofNullable(apiResponse.getQuizzes()).orElse(List.of()).stream()
-                .map(dto -> Quiz.builder()
-                        .questionNumber(dto.getQuestionNumber())
-                        .question(dto.getQuestion())
-                        .choices(dto.getChoices())
-                        .answerIndex(dto.getAnswerIndex())
-                        .explanation(dto.getExplanation())
-                        .build())
-                .collect(Collectors.toList());
-
-        Tale tale = Tale.builder()
-                .title(apiResponse.getTitle())
-                .contents(apiResponse.getContents())
-                .imageUrls(apiResponse.getImageUrls())
-                .quizzes(quizzes)
-                .build();
-
-        // DB 저장된 내용 반환
-        return TaleResponseDto.builder()
-                .id(tale.getId())
-                .build();
-    }
-
-    @Override
     public TaleDetailResponseDto getTale(Long taleId) {
         Tale tale = taleRepository.findById(taleId).orElseThrow();
         return new TaleDetailResponseDto(tale.getTitle(), tale.getContents(), tale.getImageUrls());
@@ -81,13 +47,6 @@ public class TaleServiceImpl implements TaleService {
                 .title(request.getTitle())
                 .contents(request.getContents())
                 .imageUrls(request.getImageUrls())
-                .quizzes(request.getQuizzes().stream()
-                        .map(dto -> Quiz.builder()
-                                .question(dto.getQuestion())
-                                .choices(dto.getChoices())
-                                .answerIndex(dto.getAnswerIndex())
-                                .build())
-                        .collect(Collectors.toList()))
                 .build();
 
         Tale saved = taleRepository.save(tale);
@@ -110,34 +69,12 @@ public class TaleServiceImpl implements TaleService {
         tale.setContents(request.getContents());
         tale.setImageUrls(request.getImageUrls());
 
-        // 기존 퀴즈 제거 후 새로 설정
-        tale.getQuizzes().clear();
-        List<Quiz> newQuizzes = request.getQuizzes().stream()
-                .map(dto -> Quiz.builder()
-                        .questionNumber(dto.getQuestionNumber())
-                        .question(dto.getQuestion())
-                        .choices(dto.getChoices())
-                        .answerIndex(dto.getAnswerIndex())
-                        .explanation(dto.getExplanation())
-                        .build())
-                .toList();
-        tale.getQuizzes().addAll(newQuizzes);
-
         Tale updated = taleRepository.save(tale);
 
         return TaleDto.builder()
                 .title(updated.getTitle())
                 .contents(updated.getContents())
                 .imageUrls(updated.getImageUrls())
-                .quizzes(updated.getQuizzes().stream()
-                        .map(q -> QuizDto.builder()
-                                .questionNumber(q.getQuestionNumber())
-                                .question(q.getQuestion())
-                                .choices(q.getChoices())
-                                .answerIndex(q.getAnswerIndex())
-                                .explanation(q.getExplanation())
-                                .build())
-                        .collect(Collectors.toList()))
                 .build();
     }
 

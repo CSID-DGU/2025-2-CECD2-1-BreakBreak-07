@@ -13,9 +13,6 @@ import java.util.List;
 
 public interface TaleService {
 
-    // 동화를 생성하고, 생성된 동화의 ID를 반환
-    TaleResponseDto createTale(TaleCreateRequestDto request);
-
     // 특정 ID에 해당하는 동화 상세 정보를 반환
     TaleDetailResponseDto getTale(Long taleId);
 

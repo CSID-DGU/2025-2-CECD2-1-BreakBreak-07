@@ -5,10 +5,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
-import com.owlearn.dto.response.ResponseDto;
-import com.owlearn.dto.response.TaleDetailResponseDto;
-import com.owlearn.dto.response.TaleResponseDto;
-import com.owlearn.dto.response.TaleSummaryResponseDto;
+import com.owlearn.dto.request.UserTaleRequestDto;
+import com.owlearn.dto.response.*;
+import com.owlearn.service.TaleAiService;
 import com.owlearn.service.TaleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +21,25 @@ import java.util.List;
 public class TaleController {
 
     private final TaleService taleService;
+    private final TaleAiService taleAiService;
     private final ObjectMapper objectMapper;
 
-    public TaleController(TaleService taleService) {
+    public TaleController(TaleService taleService, TaleAiService taleAiService) {
         this.taleService = taleService;
+        this.taleAiService = taleAiService;
         this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * 새로운 동화를 생성하는 API
-     * @param request 동화 생성 요청 DTO
-     * @return 생성된 동화의 ID를 담은 응답 DTO
-     */
+    // 기존 동화에 이미지 생성
     @PostMapping
-    public ResponseDto<TaleResponseDto> createTale(@RequestBody TaleCreateRequestDto request) {
-        return new ResponseDto<>(taleService.createTale(request));
+    public ResponseDto<TaleIdResponseDto> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
+        return new ResponseDto<>(taleAiService.generateImagesForExistingTale(request));
+    }
+
+    // 새 동화 생성 + 이미지 생성
+    @PostMapping("/generate")
+    public ResponseDto<TaleIdResponseDto> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
+        return new ResponseDto<>(taleAiService.createTaleAndGenerateImages(request));
     }
 
     /**
@@ -53,7 +56,6 @@ public class TaleController {
      * 동화 직접 삽입 API (이미지 파일 업로드 포함)
      * @param title 동화 제목
      * @param contents 동화 내용 리스트
-     * @param quizzesJson JSON 문자열
      * @param images 동화에 포함될 이미지 파일들 (multipart/form-data)
      * @return 생성된 동화의 ID를 포함한 응답 DTO
      */
@@ -63,28 +65,16 @@ public class TaleController {
 
         @RequestParam String title,
         @RequestParam List<String> contents,
-        @RequestParam String quizzesJson,
         @RequestPart("images") List<MultipartFile> images) {
 
         // images 파일들을 서버 static 폴더에 저장하고 저장된 url 리스트 생성
         List<String> savedImageUrls = taleService.saveImages(images);
-
-        // quizzesJson을 List<QuizDto>로 변환
-        List<QuizDto> quizzes;
-        try {
-            quizzes = objectMapper.readValue(quizzesJson, new TypeReference<List<QuizDto>>() {});
-        } catch (JsonProcessingException e) {
-            // JSON 파싱 실패
-            e.printStackTrace();
-            throw new RuntimeException("Invalid quizzes JSON format", e);
-        }
 
         // TaleDto 생성
         TaleDto taleDto = TaleDto.builder()
                 .title(title)
                 .contents(contents)
                 .imageUrls(savedImageUrls)
-                .quizzes(quizzes)
                 .build();
 
         // DB에 저장
