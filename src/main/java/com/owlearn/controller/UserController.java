@@ -58,7 +58,7 @@ public class UserController {
         return new ResponseDto<>(userService.checkId(userId));
     }
 
-    @GetMapping("/character/{childId")
+    @GetMapping("/character/{childId}")
     public ResponseDto<CharacterResponseDto> getCharacter(
             @PathVariable Long childId
     ) {
