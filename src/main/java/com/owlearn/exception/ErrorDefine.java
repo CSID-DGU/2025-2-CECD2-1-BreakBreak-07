@@ -22,7 +22,7 @@ public enum ErrorDefine {
 
     // NOT_FOUND: 404
     USER_NOT_FOUND("4040", HttpStatus.NOT_FOUND, "Not Found: User Not Found"),
-    CHILD_NOT_FOUND("4041", HttpStatus.NOT_FOUND, "Not Found: Food Not Found"),
+    CHILD_NOT_FOUND("4041", HttpStatus.NOT_FOUND, "Not Found: Child Not Found"),
     // CONFLICT: 409
     USER_EXIST("4090", HttpStatus.CONFLICT, "Conflict: An account with this userNickname already exists."),
     USERID_EXIST("4091", HttpStatus.CONFLICT, "Conflict: An account with this userId already exists."),

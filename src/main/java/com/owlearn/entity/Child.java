@@ -17,7 +17,7 @@ public class Child {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parenet_id", nullable = false)
+    @JoinColumn(name = "parent_id", nullable = false)
     private User user;
 
     @Column(nullable = false)
