@@ -33,10 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = resolveToken(request);
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            Long userId = Long.valueOf(jwtTokenProvider.getUserId(token));
+            String userId = jwtTokenProvider.getUserId(token);
 
             // 1. 엔티티 Optional 조회
-            Optional<User> userOptional = userRepository.findById(userId);
+            Optional<User> userOptional = userRepository.findByUserId(userId);
 
             if (userOptional.isEmpty()) {
                 // DB에 해당 ID의 사용자가 없는 경우
