@@ -14,12 +14,12 @@ public class JwtTokenProvider {
     private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1시간
 
     // ✅ 토큰 생성
-    public String generateToken(Long userId) {
+    public String generateToken(String userId) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_TIME);
 
         return Jwts.builder()
-                .setSubject(String.valueOf(userId))
+                .setSubject(userId)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key)

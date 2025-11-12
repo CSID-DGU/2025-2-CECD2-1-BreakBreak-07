@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // JWT 토큰 발행
-        String token = jwtTokenProvider.generateToken(Long.valueOf(user.getUserId()));
+        String token = jwtTokenProvider.generateToken(user.getUserId());
 
         // 4응답 반환
         return SigninResponseDto.builder()
