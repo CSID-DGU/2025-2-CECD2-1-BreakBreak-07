@@ -1,16 +1,17 @@
 package com.owlearn.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
-import com.owlearn.dto.request.UserTaleRequestDto;
+import com.owlearn.dto.request.ChildTaleRequestDto;
 import com.owlearn.dto.response.*;
 import com.owlearn.service.TaleAiService;
 import com.owlearn.service.TaleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +21,19 @@ import java.util.List;
 @RequestMapping("/api/tales")
 public class TaleController {
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
     private final TaleService taleService;
     private final TaleAiService taleAiService;
     private final ObjectMapper objectMapper;
 
-    public TaleController(TaleService taleService, TaleAiService taleAiService) {
+    public TaleController(
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider jwtTokenProvider,
+            TaleService taleService,
+            TaleAiService taleAiService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.taleService = taleService;
         this.taleAiService = taleAiService;
         this.objectMapper = new ObjectMapper();
@@ -32,14 +41,16 @@ public class TaleController {
 
     // 기존 동화에 이미지 생성
     @PostMapping
-    public ResponseDto<TaleIdResponseDto> generateImagesForExisting(@RequestBody UserTaleRequestDto request) {
-        return new ResponseDto<>(taleAiService.generateImagesForExistingTale(request));
+    public ResponseDto<TaleIdResponseDto> generateImagesForExisting(@RequestBody ChildTaleRequestDto request) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(taleAiService.generateImagesForExistingTale(userId, request));
     }
 
     // 새 동화 생성 + 이미지 생성
     @PostMapping("/generate")
     public ResponseDto<TaleIdResponseDto> createTaleAndGenerate(@RequestBody TaleCreateRequestDto request) {
-        return new ResponseDto<>(taleAiService.createTaleAndGenerateImages(request));
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(taleAiService.createTaleAndGenerateImages(userId, request));
     }
 
     /**

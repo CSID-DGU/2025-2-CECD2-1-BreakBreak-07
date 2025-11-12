@@ -3,11 +3,12 @@ package com.owlearn.service;
 import com.owlearn.dto.request.ImageGenerateRequestDto;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.TextGenerateRequestDto;
-import com.owlearn.dto.request.UserTaleRequestDto;
+import com.owlearn.dto.request.ChildTaleRequestDto;
 import com.owlearn.dto.response.ImageGenerateResponseDto;
 import com.owlearn.dto.response.TaleIdResponseDto;
 import com.owlearn.dto.response.TextGenerateResponseDto;
 import com.owlearn.entity.Tale;
+import com.owlearn.repository.ChildRepository;
 import com.owlearn.repository.TaleRepository;
 import com.owlearn.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -36,6 +37,7 @@ public class TaleAiService {
 
     private final TaleRepository taleRepository;
     private final UserRepository userRepository;
+    private final ChildRepository childRepository;
     private final RestTemplate restTemplate;
 
     private static final String TEXT_ENDPOINT  = "http://localhost:8000/ai/text-generate";
@@ -55,7 +57,7 @@ public class TaleAiService {
     // =========================
     // 1) 기존 동화에 이미지 생성
     // =========================
-    public TaleIdResponseDto generateImagesForExistingTale(UserTaleRequestDto req) {
+    public TaleIdResponseDto generateImagesForExistingTale(String userId, ChildTaleRequestDto req) {
         Tale tale = taleRepository.findById(req.getTaleId())
                 .orElseThrow(() -> new NoSuchElementException("동화가 존재하지 않습니다: id=" + req.getTaleId()));
 
@@ -64,7 +66,7 @@ public class TaleAiService {
             throw new IllegalStateException("동화 내용(contents)이 비어 있습니다: id=" + req.getTaleId());
         }
 
-        String refImgUrl = resolveUserCharacterImageUrl(req.getUserId());
+        String refImgUrl = resolveChildCharacterImageUrl(req.getChildId(), userId);
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
@@ -80,7 +82,7 @@ public class TaleAiService {
     // =========================
     // 2) 새 동화 생성 + 이미지 생성 (텍스트만 사용)
     // =========================
-    public TaleIdResponseDto createTaleAndGenerateImages(TaleCreateRequestDto req) {
+    public TaleIdResponseDto createTaleAndGenerateImages(String userId, TaleCreateRequestDto req) {
 
         TextGenerateRequestDto payload = TextGenerateRequestDto.builder()
                 .subject(req.getSubject())
@@ -101,7 +103,7 @@ public class TaleAiService {
         tale = taleRepository.save(tale);
 
         List<String> contents = text.getContents();
-        String refImgUrl = resolveUserCharacterImageUrl(req.getUserId());
+        String refImgUrl = resolveChildCharacterImageUrl(req.getChildId(), userId);
 
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
@@ -114,11 +116,11 @@ public class TaleAiService {
 
     // ======== 내부 공통 ========
 
-    /** userId로 캐릭터 이미지 URL 조회 (없으면 null) */
-    private String resolveUserCharacterImageUrl(Long userId) {
-        return userRepository.findById(userId)
-                .map(u -> {
-                    String url = u.getCharacterImageUrl();
+    /** childId로 캐릭터 이미지 URL 조회 (없으면 null) */
+    private String resolveChildCharacterImageUrl(Long childId, String userId) {
+        return childRepository.findByIdAndUser_UserId(childId, userId)
+                .map(child -> {
+                    String url = child.getCharacterImageUrl();
                     return (url != null && !url.isBlank()) ? url : null;
                 })
                 .orElse(null);

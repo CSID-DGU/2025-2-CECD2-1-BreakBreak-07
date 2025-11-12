@@ -58,18 +58,21 @@ public class UserController {
         return new ResponseDto<>(userService.checkId(userId));
     }
 
-    @GetMapping("/character")
-    public ResponseDto<CharacterResponseDto> getCharacter() {
+    @GetMapping("/character/{childId")
+    public ResponseDto<CharacterResponseDto> getCharacter(
+            @PathVariable Long childId
+    ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return new ResponseDto<>(userService.getCharacter(userId));
+        return new ResponseDto<>(userService.getCharacter(childId, userId));
     }
 
     @PostMapping(value = "/character", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseDto<CharacterResponseDto> uploadCharacter(
-            @RequestParam String userId,
+            @RequestParam("childId") Long childId,
             @RequestPart("image") MultipartFile image
     ) {
-        return new ResponseDto<>(userService.uploadOrUpdateCharacter(userId, image));
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(userService.uploadOrUpdateCharacter(childId, userId, image));
     }
 
     @GetMapping("/child")

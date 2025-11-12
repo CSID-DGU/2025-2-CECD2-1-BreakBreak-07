@@ -13,7 +13,7 @@ public interface UserService {
     SigninResponseDto signin(SigninRequestDto signinRequestDto);
     NotifyResponseDto modify(SignupRequestDto signupRequestDto);
     NotifyResponseDto checkId(String userId);
-    CharacterResponseDto getCharacter(String userId);
-    CharacterResponseDto uploadOrUpdateCharacter(String userId, MultipartFile image);
+    CharacterResponseDto getCharacter(Long childId, String userId);
+    CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image);
     ChildStatusResponseDto getChildStatus(String userId);
 }

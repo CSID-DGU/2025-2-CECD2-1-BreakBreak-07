@@ -91,23 +91,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CharacterResponseDto getCharacter(String userId) {
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+    public CharacterResponseDto getCharacter(Long childId, String userId) {
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
+
         return CharacterResponseDto.builder()
-                .imageUrl(user.getCharacterImageUrl())
+                .imageUrl(child.getCharacterImageUrl())
                 .build();
     }
 
     @Override
-    public CharacterResponseDto uploadOrUpdateCharacter(String userId, MultipartFile image) {
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+    public CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image) {
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
 
         try {
-            String url = imageStorage.saveUserCharacterImage(userId, image);
-            user.setCharacterImageUrl(url);
-            userRepository.save(user);
+            String url = imageStorage.saveUserCharacterImage(childId, image);
+            child.setCharacterImageUrl(url);
+            childRepository.save(child);
 
             return CharacterResponseDto.builder()
                     .imageUrl(url)

@@ -31,9 +31,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String characterImageUrl;
-
     private String role;
 
     // --- UserDetails 구현 메서드 ---

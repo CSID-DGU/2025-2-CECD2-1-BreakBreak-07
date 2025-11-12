@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserTaleRequestDto {
+public class ChildTaleRequestDto {
     Long taleId;
-    Long userId;
+    Long childId;
 }

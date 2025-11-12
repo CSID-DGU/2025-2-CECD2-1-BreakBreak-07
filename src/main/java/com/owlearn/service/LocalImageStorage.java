@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 public class LocalImageStorage {
 
-    public String saveUserCharacterImage(String userId, MultipartFile file) throws IOException {
+    public String saveUserCharacterImage(Long childId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("빈 파일입니다.");
         }
@@ -22,7 +22,7 @@ public class LocalImageStorage {
         if (ext == null) ext = "png";
 
         // 파일명: userId-uuid.ext
-        String filename = userId + "-" + UUID.randomUUID() + "." + ext.toLowerCase();
+        String filename = childId + "-" + UUID.randomUUID() + "." + ext.toLowerCase();
 
         String imageRoot = "/home/ubuntu/static/";
         Path dir = Paths.get(imageRoot, "characters");

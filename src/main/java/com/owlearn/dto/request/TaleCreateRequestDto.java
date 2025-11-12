@@ -15,5 +15,5 @@ public class TaleCreateRequestDto {
     private String tone;
     private String artStyle;
     private String ageGroup;
-    private Long userId;
+    private Long childId;
 }
