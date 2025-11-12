@@ -131,5 +131,13 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public User getUserInfo(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+
+        return user;
+    }
+
 
 }

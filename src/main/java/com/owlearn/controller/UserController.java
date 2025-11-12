@@ -4,6 +4,7 @@ import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
+import com.owlearn.entity.User;
 import com.owlearn.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,12 @@ public class UserController {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
+    }
+
+    @GetMapping("/me")
+    public ResponseDto<User> getCurrentUserInfo() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(userService.getUserInfo(userId));
     }
 
     @PostMapping("/signup")

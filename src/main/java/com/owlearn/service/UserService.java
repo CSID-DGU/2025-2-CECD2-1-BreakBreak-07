@@ -6,6 +6,7 @@ import com.owlearn.dto.response.CharacterResponseDto;
 import com.owlearn.dto.response.ChildStatusResponseDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.SigninResponseDto;
+import com.owlearn.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
@@ -16,4 +17,5 @@ public interface UserService {
     CharacterResponseDto getCharacter(Long childId, String userId);
     CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image);
     ChildStatusResponseDto getChildStatus(String userId);
+    User getUserInfo(String userId);
 }
