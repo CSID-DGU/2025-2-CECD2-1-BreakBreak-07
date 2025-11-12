@@ -67,7 +67,8 @@ public class TaleAiService {
         }
 
         String refImgUrl = resolveChildCharacterImageUrl(req.getChildId(), userId);
-        List<String> remoteUrls = callImageGenerate(contents, refImgUrl);
+        String artStyle = "illustration";
+        List<String> remoteUrls = callImageGenerate(contents, refImgUrl, artStyle);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
         tale.setImageUrls(localUrls);
@@ -105,7 +106,7 @@ public class TaleAiService {
         List<String> contents = text.getContents();
         String refImgUrl = resolveChildCharacterImageUrl(req.getChildId(), userId);
 
-        List<String> remoteUrls = callImageGenerate(contents, refImgUrl);
+        List<String> remoteUrls = callImageGenerate(contents, refImgUrl, req.getArtStyle());
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
         tale.setImageUrls(localUrls);
@@ -126,8 +127,8 @@ public class TaleAiService {
                 .orElse(null);
     }
 
-    private List<String> callImageGenerate(List<String> prompts, String refImgUrl) {
-        ImageGenerateRequestDto payload = new ImageGenerateRequestDto(prompts, refImgUrl);
+    private List<String> callImageGenerate(List<String> prompts, String refImgUrl, String artStyle) {
+        ImageGenerateRequestDto payload = new ImageGenerateRequestDto(prompts, refImgUrl, artStyle);
         ResponseEntity<ImageGenerateResponseDto> resp = restTemplate.exchange(
                 URI.create(IMAGE_ENDPOINT),
                 HttpMethod.POST,
