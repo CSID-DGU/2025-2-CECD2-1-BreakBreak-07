@@ -1,12 +1,15 @@
 package com.owlearn.controller;
 
+import com.owlearn.config.JwtTokenProvider;
+import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
-import com.owlearn.dto.response.CharacterResponseDto;
-import com.owlearn.dto.response.ChildStatusResponseDto;
-import com.owlearn.dto.response.NotifyResponseDto;
-import com.owlearn.dto.response.ResponseDto;
+import com.owlearn.dto.response.*;
 import com.owlearn.service.UserService;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,8 +17,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/user")
 
 public class UserController {
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-    public UserController(UserService userService) {
+
+    public UserController(
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider jwtTokenProvider,
+            UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
     }
 
@@ -24,6 +35,14 @@ public class UserController {
             @RequestBody SignupRequestDto signupRequestDto
     ){
         return new ResponseDto<>(userService.signup(signupRequestDto));
+    }
+
+    @PostMapping("/signin")
+    public ResponseDto<SigninResponseDto> signin(
+            @RequestBody SigninRequestDto signinRequestDto
+    ){
+        return new ResponseDto<>(userService.signin(signinRequestDto));
+
     }
     @PutMapping("/modify")
     public ResponseDto<NotifyResponseDto> modify(
@@ -40,7 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/character")
-    public ResponseDto<CharacterResponseDto> getCharacter(@RequestParam String userId) {
+    public ResponseDto<CharacterResponseDto> getCharacter() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(userService.getCharacter(userId));
     }
 
@@ -53,7 +73,8 @@ public class UserController {
     }
 
     @GetMapping("/child")
-    public ResponseDto<ChildStatusResponseDto> getChildStatus(@RequestParam String userId) {
+    public ResponseDto<ChildStatusResponseDto> getChildStatus() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(userService.getChildStatus(userId));
     }
 }

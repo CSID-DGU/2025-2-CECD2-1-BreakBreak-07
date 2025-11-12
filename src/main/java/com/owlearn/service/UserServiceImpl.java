@@ -1,10 +1,9 @@
 package com.owlearn.service;
 
+import com.owlearn.config.JwtTokenProvider;
+import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
-import com.owlearn.dto.response.CharacterResponseDto;
-import com.owlearn.dto.response.ChildStatusResponseDto;
-import com.owlearn.dto.response.NotifyResponseDto;
-import com.owlearn.dto.response.ResponseDto;
+import com.owlearn.dto.response.*;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.User;
 import com.owlearn.exception.ApiException;
@@ -12,6 +11,7 @@ import com.owlearn.exception.ErrorDefine;
 import com.owlearn.repository.ChildRepository;
 import com.owlearn.repository.TaleRepository;
 import com.owlearn.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,17 +19,20 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Service
+
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final LocalImageStorage imageStorage;
     private final ChildRepository childRepository;
     private final TaleRepository taleRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository) {
+    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.imageStorage = localImageStorage;
         this.childRepository = childRepository;
         this.taleRepository = taleRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -44,6 +47,24 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return NotifyResponseDto.builder()
                 .message("회원가입이 잘 되었습니다")
+                .build();
+    }
+    @Override
+    public SigninResponseDto signin(SigninRequestDto signinRequestDto) {
+        User user = userRepository.findByUserId(signinRequestDto.getUserId())
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+
+        if (!user.getPassword().equals(signinRequestDto.getPassword())) {
+            throw new ApiException(ErrorDefine.ACCESS_DENIED);
+        }
+
+        // JWT 토큰 발행
+        String token = jwtTokenProvider.generateToken(Long.valueOf(user.getUserId()));
+
+        // 4응답 반환
+        return SigninResponseDto.builder()
+                .message("로그인 성공")
+                .token(token) // NotifyResponseDto에 token 필드 추가 가능
                 .build();
     }
 
