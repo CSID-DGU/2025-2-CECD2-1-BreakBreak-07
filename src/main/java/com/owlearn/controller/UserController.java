@@ -1,6 +1,7 @@
 package com.owlearn.controller;
 
 import com.owlearn.config.JwtTokenProvider;
+import com.owlearn.dto.request.AddChildRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Security;
 
 @RestController
 @RequestMapping("/api/user")
@@ -86,5 +89,13 @@ public class UserController {
     public ResponseDto<ChildStatusResponseDto> getChildStatus() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(userService.getChildStatus(userId));
+    }
+
+    @PostMapping("/child")
+    public ResponseDto<NotifyResponseDto> addChild(
+            @RequestBody AddChildRequestDto addChildRequestDto
+    ) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(userService.addChild(userId, addChildRequestDto));
     }
 }

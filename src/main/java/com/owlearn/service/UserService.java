@@ -1,5 +1,6 @@
 package com.owlearn.service;
 
+import com.owlearn.dto.request.AddChildRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.CharacterResponseDto;
@@ -18,4 +19,5 @@ public interface UserService {
     CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image);
     ChildStatusResponseDto getChildStatus(String userId);
     User getUserInfo(String userId);
+    NotifyResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto);
 }

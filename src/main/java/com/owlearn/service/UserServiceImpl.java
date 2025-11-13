@@ -1,6 +1,7 @@
 package com.owlearn.service;
 
 import com.owlearn.config.JwtTokenProvider;
+import com.owlearn.dto.request.AddChildRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -12,6 +13,7 @@ import com.owlearn.repository.ChildRepository;
 import com.owlearn.repository.TaleRepository;
 import com.owlearn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -128,6 +130,21 @@ public class UserServiceImpl implements UserService {
                 .name(child.getName())
                 .taleCount(taleCount)
                 .prefer(child.getPrefer())
+                .build();
+    }
+
+    public NotifyResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+        Child child = Child.builder()
+                .name(addChildRequestDto.getChildName())
+                .age(addChildRequestDto.getAge())
+                .user(user)
+                .build();
+        childRepository.save(child);
+        String message = "아이 계정이 추가되었습니다.";
+        return NotifyResponseDto.builder()
+                .message(message)
                 .build();
     }
 
