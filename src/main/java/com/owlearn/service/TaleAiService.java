@@ -7,10 +7,12 @@ import com.owlearn.dto.request.ChildTaleRequestDto;
 import com.owlearn.dto.response.ImageGenerateResponseDto;
 import com.owlearn.dto.response.TaleIdResponseDto;
 import com.owlearn.dto.response.TextGenerateResponseDto;
+import com.owlearn.entity.Child;
 import com.owlearn.entity.Tale;
+import com.owlearn.exception.ApiException;
+import com.owlearn.exception.ErrorDefine;
 import com.owlearn.repository.ChildRepository;
 import com.owlearn.repository.TaleRepository;
-import com.owlearn.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.http.*;
@@ -36,7 +38,6 @@ import java.util.*;
 public class TaleAiService {
 
     private final TaleRepository taleRepository;
-    private final UserRepository userRepository;
     private final ChildRepository childRepository;
     private final RestTemplate restTemplate;
 
@@ -55,29 +56,44 @@ public class TaleAiService {
     }
 
     // =========================
-    // 1) 기존 동화에 이미지 생성
+    // 1) 기존 동화로 이미지 생성
     // =========================
     public TaleIdResponseDto generateImagesForExistingTale(String userId, ChildTaleRequestDto req) {
-        Tale tale = taleRepository.findById(req.getTaleId())
+        Tale originalTale = taleRepository.findById(req.getTaleId())
                 .orElseThrow(() -> new NoSuchElementException("동화가 존재하지 않습니다: id=" + req.getTaleId()));
 
-        List<String> contents = tale.getContents();
+        List<String> contents = originalTale.getContents();
         if (ObjectUtils.isEmpty(contents)) {
             throw new IllegalStateException("동화 내용(contents)이 비어 있습니다: id=" + req.getTaleId());
         }
 
-        String refImgUrl = resolveChildCharacterImageUrl(req.getChildId(), userId);
+        Child child = childRepository.findByIdAndUser_UserId(req.getChildId(), userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
+
+        String refImgUrl = Optional.ofNullable(child.getCharacterImageUrl())
+                .filter(url -> !url.isBlank())
+                .orElse(null);
+
         String artStyle = "illustration";
+
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, artStyle);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
-        tale.setImageUrls(localUrls);
-        if (tale.getTitle() == null || tale.getTitle().isBlank()) {
-            tale.setTitle("Tale-" + tale.getId());
+        String title = originalTale.getTitle();
+        if (title == null || title.isBlank()) {
+            title = "Tale-" + originalTale.getId();
         }
-        taleRepository.save(tale);
 
-        return TaleIdResponseDto.builder().taleId(tale.getId()).build();
+        Tale newTale = Tale.builder()
+                .child(child)
+                .title(title)
+                .contents(new ArrayList<>(originalTale.getContents()))
+                .imageUrls(localUrls)
+                .build();
+
+        newTale = taleRepository.save(newTale);
+
+        return TaleIdResponseDto.builder().taleId(newTale.getId()).build();
     }
 
     // =========================
@@ -95,16 +111,23 @@ public class TaleAiService {
         // FastAPI에서 동화 텍스트만 생성
         TextGenerateResponseDto text = callTextGenerate(payload);
 
+        Child child = childRepository.findByIdAndUser_UserId(req.getChildId(), userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
+
         // DB에 동화 저장
         Tale tale = Tale.builder()
+                .child(child)
                 .title(text.getTitle())
                 .contents(text.getContents())
                 .imageUrls(new ArrayList<>())
+                .score(text.getScore())
                 .build();
         tale = taleRepository.save(tale);
 
         List<String> contents = text.getContents();
-        String refImgUrl = resolveChildCharacterImageUrl(req.getChildId(), userId);
+        String refImgUrl = Optional.ofNullable(child.getCharacterImageUrl())
+                .filter(url -> !url.isBlank())
+                .orElse(null);
 
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, req.getArtStyle());
         List<String> localUrls = ingestRemoteImages(remoteUrls);
@@ -116,17 +139,6 @@ public class TaleAiService {
     }
 
     // ======== 내부 공통 ========
-
-    /** childId로 캐릭터 이미지 URL 조회 (없으면 null) */
-    private String resolveChildCharacterImageUrl(Long childId, String userId) {
-        return childRepository.findByIdAndUser_UserId(childId, userId)
-                .map(child -> {
-                    String url = child.getCharacterImageUrl();
-                    return (url != null && !url.isBlank()) ? url : null;
-                })
-                .orElse(null);
-    }
-
     private List<String> callImageGenerate(List<String> prompts, String refImgUrl, String artStyle) {
         ImageGenerateRequestDto payload = new ImageGenerateRequestDto(prompts, refImgUrl, artStyle);
         ResponseEntity<ImageGenerateResponseDto> resp = restTemplate.exchange(
