@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
-    public NotifyResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto) {
+    public ChildIdResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
         Child child = Child.builder()
@@ -147,10 +147,8 @@ public class UserServiceImpl implements UserService {
                 .user(user)
                 .build();
         childRepository.save(child);
-        String message = "아이 계정이 추가되었습니다.";
-        return NotifyResponseDto.builder()
-                .message(message)
-                .build();
+
+        return ChildIdResponseDto.builder().childId(child.getId()).build();
     }
 
     @Override

@@ -93,7 +93,7 @@ public class UserController {
     }
 
     @PostMapping("/child")
-    public ResponseDto<NotifyResponseDto> addChild(
+    public ResponseDto<ChildIdResponseDto> addChild(
             @RequestBody AddChildRequestDto addChildRequestDto
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();

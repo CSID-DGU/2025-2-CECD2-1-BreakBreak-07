@@ -3,10 +3,7 @@ package com.owlearn.service;
 import com.owlearn.dto.request.AddChildRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
-import com.owlearn.dto.response.CharacterResponseDto;
-import com.owlearn.dto.response.ChildResponseDto;
-import com.owlearn.dto.response.NotifyResponseDto;
-import com.owlearn.dto.response.SigninResponseDto;
+import com.owlearn.dto.response.*;
 import com.owlearn.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,5 +18,5 @@ public interface UserService {
     CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image);
     List<ChildResponseDto> getChildStatus(String userId);
     User getUserInfo(String userId);
-    NotifyResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto);
+    ChildIdResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto);
 }
