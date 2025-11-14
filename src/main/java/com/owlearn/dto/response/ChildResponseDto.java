@@ -7,8 +7,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChildStatusResponseDto {
+public class ChildResponseDto {
+    private Long id;
     private String name;
-    private Integer taleCount;
+    private Integer age;
     private String prefer;
+    private String characterImageUrl;
+    private Integer taleCount;
 }

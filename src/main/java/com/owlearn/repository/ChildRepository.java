@@ -4,6 +4,7 @@ import com.owlearn.entity.Child;
 import com.owlearn.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChildRepository extends JpaRepository<Child, Long> {
@@ -14,4 +15,6 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
 
     // 필요 시 소유권만 빠르게 확인
     boolean existsByIdAndUser_UserId(Long id, String userId);
+
+    List<Child> findAllByUser(User user);
 }

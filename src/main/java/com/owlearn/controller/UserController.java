@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Security;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -86,7 +87,7 @@ public class UserController {
     }
 
     @GetMapping("/child")
-    public ResponseDto<ChildStatusResponseDto> getChildStatus() {
+    public ResponseDto<List<ChildResponseDto>> getChildStatus() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(userService.getChildStatus(userId));
     }

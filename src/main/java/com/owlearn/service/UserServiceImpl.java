@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 
@@ -120,17 +121,21 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public ChildStatusResponseDto getChildStatus(String userId) {
+    public List<ChildResponseDto> getChildStatus(String userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
-        Child child = childRepository.findByUser(user)
-                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
-        Integer taleCount = taleRepository.countByChild(child);
-        return ChildStatusResponseDto.builder()
-                .name(child.getName())
-                .taleCount(taleCount)
-                .prefer(child.getPrefer())
-                .build();
+        List<Child> children = childRepository.findAllByUser(user);
+
+        return children.stream()
+                .map(child -> ChildResponseDto.builder()
+                        .id(child.getId())
+                        .name(child.getName())
+                        .age(child.getAge())
+                        .prefer(child.getPrefer())
+                        .characterImageUrl(child.getCharacterImageUrl())
+                        .taleCount(taleRepository.countByChild(child))
+                        .build())
+                .toList();
     }
 
     public NotifyResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto) {
