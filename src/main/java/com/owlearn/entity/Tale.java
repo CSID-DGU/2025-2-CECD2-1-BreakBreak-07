@@ -61,4 +61,11 @@ public class Tale {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "tale_id")
     private List<Quiz> quizzes;
+
+    /**
+     * 동화 평가 점수 (0~100)
+     * 아직 평가되지 않은 경우 null
+     */
+    @Column(name = "score")
+    private Integer score;
 }

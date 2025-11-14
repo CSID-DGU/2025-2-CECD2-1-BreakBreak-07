@@ -13,7 +13,7 @@ public class TaleCreateRequestDto {
 
     private String subject;
     private String tone;
-    private String artStyle;
+    private String artStyle; // watercolor, asian ink painting, illustration, hand-drawn
     private String ageGroup;
     private Long childId;
 }

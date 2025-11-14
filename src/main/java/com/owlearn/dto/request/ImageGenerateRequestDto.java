@@ -12,4 +12,5 @@ import java.util.List;
 public class ImageGenerateRequestDto {
     private List<String> prompts;
     private String refImgUrl;
+    private String artStyle;
 }
