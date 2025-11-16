@@ -31,7 +31,13 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String role;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.role == null) this.role = "USER";
+    }
 
     // --- UserDetails 구현 메서드 ---
 

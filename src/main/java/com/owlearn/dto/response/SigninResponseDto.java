@@ -11,4 +11,5 @@ import lombok.Setter;
 public class SigninResponseDto {
     private String message;
     private String token;
+    private String role;
 }

@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
         return SigninResponseDto.builder()
                 .message("로그인 성공")
                 .token(token) // NotifyResponseDto에 token 필드 추가 가능
+                .role(user.getRole())
                 .build();
     }
 
