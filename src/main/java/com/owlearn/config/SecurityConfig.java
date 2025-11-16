@@ -56,14 +56,20 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration c = new CorsConfiguration();
         c.setAllowCredentials(true);
-        c.setAllowedOrigins(List.of(
+        c.setAllowedOriginPatterns(List.of(
                 "http://localhost:3000",
                 "https://dguowlearn.netlify.app",
                 "https://*.netlify.app"
         ));
         c.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        c.setAllowedHeaders(List.of("*"));
-        c.setExposedHeaders(List.of("Location"));
+        c.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin"
+        ));
+        c.setExposedHeaders(List.of("Authorization", "Location"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", c);
         return source;
