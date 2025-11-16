@@ -5,7 +5,6 @@ import com.owlearn.dto.response.TaleReviewResponseDto;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.Tale;
 import com.owlearn.entity.TaleReview;
-import com.owlearn.entity.User;
 import com.owlearn.exception.ApiException;
 import com.owlearn.exception.ErrorDefine;
 import com.owlearn.repository.ChildRepository;
@@ -83,6 +82,21 @@ public class TaleReviewService {
         return reviews.stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    /**
+     * 독후감 단건 조회
+     */
+    public TaleReviewResponseDto getReviewById(String userId, Long reviewId) {
+        TaleReview review = taleReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.REVIEW_NOT_FOUND));
+
+        // 이 리뷰가 로그인한 유저의 아이 것이 맞는지 검증
+        if (!review.getChild().getUser().getUserId().equals(userId)) {
+            throw new ApiException(ErrorDefine.ACCESS_DENIED);
+        }
+
+        return toDto(review);
     }
 
     private TaleReviewResponseDto toDto(TaleReview review) {

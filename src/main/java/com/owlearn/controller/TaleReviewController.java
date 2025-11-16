@@ -31,6 +31,21 @@ public class TaleReviewController {
     }
 
     /**
+     * 독후감 단건 조회
+     */
+    @GetMapping("/{reviewId}")
+    public ResponseDto<TaleReviewResponseDto> getReviewById(
+            @PathVariable Long reviewId
+    ) {
+        String userId = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        TaleReviewResponseDto dto = taleReviewService.getReviewById(userId, reviewId);
+        return new ResponseDto<>(dto);
+    }
+
+    /**
      * 특정 동화에 대한 독후감 조회
      */
     @GetMapping("/tales/{taleId}")
