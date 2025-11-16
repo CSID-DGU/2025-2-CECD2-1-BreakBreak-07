@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface TaleReviewRepository extends JpaRepository<TaleReview, Long> {
 
-    boolean existsByChildIdAndTaleId(Long childId, Long taleId);
-
     List<TaleReview> findByTaleId(Long taleId);
 
     List<TaleReview> findByChildId(Long childId);

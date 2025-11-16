@@ -43,11 +43,6 @@ public class TaleReviewService {
         Tale tale = taleRepository.findById(taleId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.TALE_NOT_FOUND));
 
-        // 이미 작성된 독후감인지 체크
-        if (taleReviewRepository.existsByChildIdAndTaleId(childId, taleId)) {
-            throw new ApiException(ErrorDefine.REVIEW_EXIST);
-        }
-
         TaleReview review = TaleReview.builder()
                 .child(child)
                 .tale(tale)

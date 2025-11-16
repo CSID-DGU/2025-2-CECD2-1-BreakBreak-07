@@ -28,7 +28,6 @@ public enum ErrorDefine {
     USER_EXIST("4090", HttpStatus.CONFLICT, "Conflict: An account with this userNickname already exists."),
     USERID_EXIST("4091", HttpStatus.CONFLICT, "Conflict: An account with this userId already exists."),
     ITEM_EXIST("4092", HttpStatus.CONFLICT, "Conflict: An item with this item already exists"),
-    REVIEW_EXIST("4093", HttpStatus.CONFLICT, "Conflict: A review for this child and tale already exists"),
     // GONE: 410
     USER_DELETE("4010", HttpStatus.GONE, "GONE: User delete data"),
     USER_EXPEL("4011", HttpStatus.GONE, "GONE: USER expelled"),
