@@ -38,7 +38,14 @@ public class TaleServiceImpl implements TaleService {
     @Override
     public TaleDetailResponseDto getTale(Long taleId) {
         Tale tale = taleRepository.findById(taleId).orElseThrow();
-        return new TaleDetailResponseDto(tale.getTitle(), tale.getContents(), tale.getImageUrls());
+
+        return TaleDetailResponseDto.builder()
+                .title(tale.getTitle())
+                .contents(tale.getContents())
+                .imageUrls(tale.getImageUrls())
+                .type(tale.getType().name())
+                .createdAt(tale.getCreatedAt().toString())
+                .build();
     }
 
     @Override
@@ -46,7 +53,9 @@ public class TaleServiceImpl implements TaleService {
         Tale tale = Tale.builder()
                 .title(request.getTitle())
                 .contents(request.getContents())
-                .imageUrls(request.getImageUrls())
+                .type(Tale.TaleType.PREMADE)
+                .child(null)
+                .originTale(null)
                 .build();
 
         Tale saved = taleRepository.save(tale);
@@ -56,9 +65,24 @@ public class TaleServiceImpl implements TaleService {
     @Override
     public List<TaleSummaryResponseDto> getAllTales() {
         return taleRepository.findAll().stream()
-                .map(tale -> new TaleSummaryResponseDto(tale.getId(), tale.getTitle()))
+                .map(tale -> new TaleSummaryResponseDto(tale.getId(), tale.getTitle(), tale.getType().name()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaleSummaryResponseDto> getPremadeTales() {
+        return taleRepository.findByType(Tale.TaleType.PREMADE).stream()
+                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaleSummaryResponseDto> getUserGeneratedTales() {
+        return taleRepository.findByType(Tale.TaleType.USER_GENERATED).stream()
+                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name()))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public TaleDto updateTale(Long taleId, TaleDto request) {

@@ -22,6 +22,10 @@ public interface TaleService {
     // 모든 동화의 상세 정보를 리스트로 반환
     List<TaleSummaryResponseDto> getAllTales();
 
+    List<TaleSummaryResponseDto> getPremadeTales();
+
+    List<TaleSummaryResponseDto> getUserGeneratedTales();
+
     // 특정 ID에 해당하는 동화 정보를 수정하고, 수정된 결과를 반환
     TaleDto updateTale(Long taleId, TaleDto request);
 

@@ -3,6 +3,7 @@ package com.owlearn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,7 +26,12 @@ public class Tale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    // 이 동화가 어떤 기본동화에서 파생되었는지
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "origin_tale_id")
+    private Tale originTale;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "child_id")
     private Child child;
 
@@ -40,7 +46,7 @@ public class Tale {
      */
     @ElementCollection
     @CollectionTable(name = "tale_contents", joinColumns = @JoinColumn(name = "tale_id"))
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private List<String> contents;
 
     /**
@@ -68,4 +74,21 @@ public class Tale {
      */
     @Column(name = "score")
     private Integer score;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TaleType type;
+
+    private LocalDateTime createdAt;
+
+    public enum TaleType {
+        PREMADE,           // 기성동화
+        FROM_PREMADE,      // 기성동화 기반 생성 동화
+        USER_GENERATED     // 사용자 생성 동화
+    }
+
+    @PrePersist
+    void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -64,44 +63,39 @@ public class TaleController {
     }
 
     /**
-     * 동화 직접 삽입 API (이미지 파일 업로드 포함)
-     * @param title 동화 제목
-     * @param contents 동화 내용 리스트
-     * @param images 동화에 포함될 이미지 파일들 (multipart/form-data)
-     * @return 생성된 동화의 ID를 포함한 응답 DTO
+     * 기성동화(PREMADE) 삽입 API
      */
-    @PostMapping(value = "/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-
-    public ResponseEntity<TaleResponseDto> insertTale(
-
-        @RequestParam String title,
-        @RequestParam List<String> contents,
-        @RequestPart("images") List<MultipartFile> images) {
-
-        // images 파일들을 서버 static 폴더에 저장하고 저장된 url 리스트 생성
-        List<String> savedImageUrls = taleService.saveImages(images);
-
-        // TaleDto 생성
-        TaleDto taleDto = TaleDto.builder()
-                .title(title)
-                .contents(contents)
-                .imageUrls(savedImageUrls)
-                .build();
-
-        // DB에 저장
-        Long taleId = taleService.insertTale(taleDto);
-
-        return ResponseEntity.ok(new TaleResponseDto(taleId));
-
+    @PostMapping(value = "/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseDto<TaleResponseDto> insertPremadeTale(
+            @RequestBody TaleDto request
+    ) {
+        return new ResponseDto<>(new TaleResponseDto(taleService.insertTale(request)));
     }
+
 
     /**
      * 전체 동화 목록을 조회하는 API
      * @return 모든 동화의 상세 정보를 담은 리스트 응답 DTO
      */
     @GetMapping
-    public ResponseEntity<List<TaleSummaryResponseDto>> getAllTales() {
-        return ResponseEntity.ok(taleService.getAllTales());
+    public ResponseDto<List<TaleSummaryResponseDto>> getAllTales() {
+        return new ResponseDto<>(taleService.getAllTales());
+    }
+
+    /**
+     * 기성동화(PREMADE)만 조회
+     */
+    @GetMapping("/premade")
+    public ResponseDto<List<TaleSummaryResponseDto>> getPremadeTales() {
+        return new ResponseDto<>(taleService.getPremadeTales());
+    }
+
+    /**
+     * 생성동화(USER_GENERATED)만 조회
+     */
+    @GetMapping("/generated")
+    public ResponseDto<List<TaleSummaryResponseDto>> getUserGeneratedTales() {
+        return new ResponseDto<>(taleService.getUserGeneratedTales());
     }
 
     /**

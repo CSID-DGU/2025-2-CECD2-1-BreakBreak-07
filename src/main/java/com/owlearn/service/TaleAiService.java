@@ -89,6 +89,8 @@ public class TaleAiService {
                 .title(title)
                 .contents(new ArrayList<>(originalTale.getContents()))
                 .imageUrls(localUrls)
+                .originTale(originalTale)
+                .type(Tale.TaleType.FROM_PREMADE)
                 .build();
 
         newTale = taleRepository.save(newTale);
@@ -121,6 +123,8 @@ public class TaleAiService {
                 .contents(text.getContents())
                 .imageUrls(new ArrayList<>())
                 .score(text.getScore())
+                .originTale(null)
+                .type(Tale.TaleType.USER_GENERATED)
                 .build();
         tale = taleRepository.save(tale);
 

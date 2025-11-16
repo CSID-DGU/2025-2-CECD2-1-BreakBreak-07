@@ -11,4 +11,5 @@ public class TaleSummaryResponseDto {
 
     private Long id;
     private String title;
+    private String type;
 }
