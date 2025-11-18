@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,6 +75,22 @@ public class Tale {
      */
     @Column(name = "score")
     private Integer score;
+
+    /**
+     * 이 동화에 달린 리뷰들 (독후감)
+     * 삭제 시 같이 삭제
+     */
+    @OneToMany(mappedBy = "tale",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<TaleReview> reviews = new ArrayList<>();
+
+    /**
+     * 이 동화를 참조로 하는 생성 동화
+     * 삭제 시 가팅 삭제
+     */
+    @OneToMany(mappedBy = "originTale", cascade = CascadeType.REMOVE)
+    private List<Tale> derivedTales;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
