@@ -44,7 +44,7 @@ public class TaleServiceImpl implements TaleService {
                 .contents(tale.getContents())
                 .imageUrls(tale.getImageUrls())
                 .type(tale.getType().name())
-                .createdAt(tale.getCreatedAt().toString())
+                .createdAt(tale.getCreatedAt() != null ? tale.getCreatedAt().toString() : null)
                 .build();
     }
 
