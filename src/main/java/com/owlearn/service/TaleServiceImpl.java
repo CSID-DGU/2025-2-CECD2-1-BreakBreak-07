@@ -56,6 +56,10 @@ public class TaleServiceImpl implements TaleService {
                 .type(Tale.TaleType.PREMADE)
                 .child(null)
                 .originTale(null)
+                .subject(request.getSubject())
+                .tone(request.getTone())
+                .artStyle(request.getArtStyle())
+                .ageGroup(request.getAgeGroup())
                 .build();
 
         Tale saved = taleRepository.save(tale);

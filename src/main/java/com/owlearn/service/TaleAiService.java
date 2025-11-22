@@ -123,6 +123,10 @@ public class TaleAiService {
                 .contents(text.getContents())
                 .imageUrls(new ArrayList<>())
                 .score(text.getScore())
+                .subject(req.getSubject())
+                .tone(req.getTone())
+                .artStyle(req.getArtStyle())
+                .ageGroup(req.getAgeGroup())
                 .originTale(null)
                 .type(Tale.TaleType.USER_GENERATED)
                 .build();

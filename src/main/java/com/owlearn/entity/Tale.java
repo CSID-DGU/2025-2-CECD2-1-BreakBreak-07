@@ -86,6 +86,21 @@ public class Tale {
     private List<TaleReview> reviews = new ArrayList<>();
 
     /**
+     * 동화 생성 옵션들 (null 허용)
+     */
+    @Column(name = "subject", length = 50, nullable = true)
+    private String subject;
+
+    @Column(name = "tone", length = 50, nullable = true)
+    private String tone;
+
+    @Column(name = "art_style", length = 50, nullable = true)
+    private String artStyle;
+
+    @Column(name = "age_group", length = 50, nullable = true)
+    private String ageGroup;
+
+    /**
      * 이 동화를 참조로 하는 생성 동화
      * 삭제 시 가팅 삭제
      */

@@ -15,5 +15,9 @@ public class TaleDto {
     private List<String> contents;
     private List<String> imageUrls;
     private List<QuizDto> quizzes;
+    private String subject;
+    private String tone;
+    private String artStyle;
+    private String ageGroup;
 }
 
