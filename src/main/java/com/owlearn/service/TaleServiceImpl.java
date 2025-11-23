@@ -3,12 +3,20 @@ package com.owlearn.service;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.TaleOptionSearchRequestDto;
+import com.owlearn.dto.response.ChildDetailResponseDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
+import com.owlearn.entity.Child;
 import com.owlearn.entity.Quiz;
 import com.owlearn.entity.Tale;
+import com.owlearn.entity.User;
+import com.owlearn.exception.ApiException;
+import com.owlearn.exception.ErrorDefine;
+import com.owlearn.repository.ChildRepository;
 import com.owlearn.repository.TaleRepository;
+import com.owlearn.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -26,15 +34,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TaleServiceImpl implements TaleService {
 
     private final TaleRepository taleRepository;
     private final RestTemplate restTemplate;
-
-    public TaleServiceImpl(TaleRepository taleRepository, RestTemplate restTemplate) {
-        this.taleRepository = taleRepository;
-        this.restTemplate = restTemplate;
-    }
+    private final ChildRepository childRepository;
+    private final UserRepository userRepository;
 
     @Override
     public TaleDetailResponseDto getTale(Long taleId) {
@@ -194,4 +200,27 @@ public class TaleServiceImpl implements TaleService {
         return imageUrls;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public TaleSummaryResponseDto getRecentTaleByChildId(Long childId, String userId) {
+
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
+
+        Optional<Tale> recentTaleOpt = taleRepository.findTopByChildIdOrderByCreatedAtDesc(childId);
+
+        return recentTaleOpt
+                .map(tale -> TaleSummaryResponseDto.builder()
+                        .id(tale.getId())
+                        .title(tale.getTitle())
+                        .type(tale.getType().name())
+                        .thumbnail(
+                                tale.getImageUrls() != null && !tale.getImageUrls().isEmpty()
+                                        ? tale.getImageUrls().get(0)
+                                        : null
+                        )
+                        .build()
+                )
+                .orElse(null);
+    }
 }

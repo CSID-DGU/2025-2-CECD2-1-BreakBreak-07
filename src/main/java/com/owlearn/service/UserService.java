@@ -11,12 +11,23 @@ import java.util.List;
 
 public interface UserService {
     NotifyResponseDto signup(SignupRequestDto signupRequestDto);
+
     SigninResponseDto signin(SigninRequestDto signinRequestDto);
+
     NotifyResponseDto modify(SignupRequestDto signupRequestDto);
+
     NotifyResponseDto checkId(String userId);
+
     CharacterResponseDto getCharacter(Long childId, String userId);
+
     CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image);
+
     List<ChildResponseDto> getChildStatus(String userId);
+
     User getUserInfo(String userId);
+
     ChildIdResponseDto addChild(String userId, AddChildRequestDto addChildRequestDto);
+
+    // 아이가 최근에 읽은 동화 반환
+    ChildDetailResponseDto getChildDetail(Long childId, String userId);
 }

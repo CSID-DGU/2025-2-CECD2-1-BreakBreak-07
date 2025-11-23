@@ -4,6 +4,7 @@ import com.owlearn.dto.TaleDto;
 
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.TaleOptionSearchRequestDto;
+import com.owlearn.dto.response.ChildDetailResponseDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
@@ -39,4 +40,6 @@ public interface TaleService {
     // images 파일들을 서버 static 폴더에 저장하고 저장된 url 리스트 반환
     List<String> saveImages(List<MultipartFile> images);
 
+    // 아이가 최근에 읽은 동화 반환
+    TaleSummaryResponseDto getRecentTaleByChildId(Long childId, String userId);
 }

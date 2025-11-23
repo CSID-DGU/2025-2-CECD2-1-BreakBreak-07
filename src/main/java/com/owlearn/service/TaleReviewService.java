@@ -1,6 +1,7 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.request.TaleReviewCreateRequestDto;
+import com.owlearn.dto.response.ReportSummaryDto;
 import com.owlearn.dto.response.TaleReviewResponseDto;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.Tale;
@@ -12,6 +13,7 @@ import com.owlearn.repository.TaleRepository;
 import com.owlearn.repository.TaleReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -110,6 +112,19 @@ public class TaleReviewService {
                 .lesson(review.getLesson())
                 .question(review.getQuestion())
                 .createdAt(review.getCreatedAt())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ReportSummaryDto getReportSummaryByChildId(Long childId, String userId) {
+
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
+
+        int count = taleReviewRepository.countByChildId(childId);
+
+        return ReportSummaryDto.builder()
+                .totalCount(count)
                 .build();
     }
 }

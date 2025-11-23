@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaleRepository extends JpaRepository<Tale, Long> {
@@ -25,6 +26,7 @@ public interface TaleRepository extends JpaRepository<Tale, Long> {
             String ageGroup
     );
 
-
+    // child 기준으로 가장 최근 동화 1개
+    Optional<Tale> findTopByChildIdOrderByCreatedAtDesc(Long childId);
 
 }

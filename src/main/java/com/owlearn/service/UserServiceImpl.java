@@ -160,5 +160,17 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public ChildDetailResponseDto getChildDetail(Long childId, String userId) {
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
+
+        return ChildDetailResponseDto.builder()
+                .id(child.getId())
+                .name(child.getName())
+                .characterImageUrl(child.getCharacterImageUrl())
+                .build();
+    }
+
 
 }

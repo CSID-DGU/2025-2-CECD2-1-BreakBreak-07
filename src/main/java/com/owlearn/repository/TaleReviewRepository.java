@@ -13,4 +13,6 @@ public interface TaleReviewRepository extends JpaRepository<TaleReview, Long> {
     List<TaleReview> findByChildId(Long childId);
 
     Optional<TaleReview> findByChildIdAndTaleId(Long childId, Long taleId);
+
+    int countByChildId(Long childId);
 }
