@@ -2,6 +2,7 @@ package com.owlearn.service;
 
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.request.TaleOptionSearchRequestDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
@@ -69,22 +70,48 @@ public class TaleServiceImpl implements TaleService {
     @Override
     public List<TaleSummaryResponseDto> getAllTales() {
         return taleRepository.findAll().stream()
-                .map(tale -> new TaleSummaryResponseDto(tale.getId(), tale.getTitle(), tale.getType().name()))
+                .map(tale -> new TaleSummaryResponseDto(tale.getId(), tale.getTitle(), tale.getType().name(), null))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TaleSummaryResponseDto> getPremadeTales() {
         return taleRepository.findByType(Tale.TaleType.PREMADE).stream()
-                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name()))
+                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name(), null))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TaleSummaryResponseDto> getUserGeneratedTales() {
         return taleRepository.findByType(Tale.TaleType.USER_GENERATED).stream()
-                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name()))
+                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name(), null))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TaleSummaryResponseDto> getUserGeneratedTalesByOptions(TaleOptionSearchRequestDto request) {
+        List<Tale> tales = taleRepository.findByTypeAndSubjectAndToneAndArtStyleAndAgeGroup(
+                Tale.TaleType.USER_GENERATED,
+                request.getSubject(),
+                request.getTone(),
+                request.getArtStyle(),
+                request.getAgeGroup()
+        );
+
+        return tales.stream()
+                .map(tale -> TaleSummaryResponseDto.builder()
+                        .id(tale.getId())
+                        .title(tale.getTitle())
+                        .type(tale.getType().name())
+                        .thumbnail(
+                                tale.getImageUrls() != null && !tale.getImageUrls().isEmpty()
+                                        ? tale.getImageUrls().get(0)
+                                        : null
+                        )
+                        .build()
+                )
+                .toList();
     }
 
 

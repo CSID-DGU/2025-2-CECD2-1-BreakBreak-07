@@ -11,9 +11,20 @@ import java.util.List;
 
 @Repository
 public interface TaleRepository extends JpaRepository<Tale, Long> {
+
     @Query("SELECT COUNT(t) FROM Tale t WHERE t.child = :child")
     Integer countByChild(@Param("child") Child child);
+
     List<Tale> findByType(Tale.TaleType type);
+
+    List<Tale> findByTypeAndSubjectAndToneAndArtStyleAndAgeGroup(
+            Tale.TaleType type,
+            String subject,
+            String tone,
+            String artStyle,
+            String ageGroup
+    );
+
 
 
 }

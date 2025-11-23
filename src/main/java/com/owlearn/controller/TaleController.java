@@ -5,6 +5,7 @@ import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.ChildTaleRequestDto;
+import com.owlearn.dto.request.TaleOptionSearchRequestDto;
 import com.owlearn.dto.response.*;
 import com.owlearn.service.TaleAiService;
 import com.owlearn.service.TaleService;
@@ -96,6 +97,16 @@ public class TaleController {
     @GetMapping("/generated")
     public ResponseDto<List<TaleSummaryResponseDto>> getUserGeneratedTales() {
         return new ResponseDto<>(taleService.getUserGeneratedTales());
+    }
+
+    /**
+     * 특정 옵션 동화 조회
+     */
+    @PostMapping("/options")
+    public ResponseDto<List<TaleSummaryResponseDto>> getByOptions(
+        @RequestBody TaleOptionSearchRequestDto requestDto
+    ) {
+        return new ResponseDto<>(taleService.getUserGeneratedTalesByOptions(requestDto));
     }
 
     /**

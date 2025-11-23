@@ -3,6 +3,7 @@ package com.owlearn.service;
 import com.owlearn.dto.TaleDto;
 
 import com.owlearn.dto.request.TaleCreateRequestDto;
+import com.owlearn.dto.request.TaleOptionSearchRequestDto;
 import com.owlearn.dto.response.TaleDetailResponseDto;
 import com.owlearn.dto.response.TaleResponseDto;
 import com.owlearn.dto.response.TaleSummaryResponseDto;
@@ -25,6 +26,9 @@ public interface TaleService {
     List<TaleSummaryResponseDto> getPremadeTales();
 
     List<TaleSummaryResponseDto> getUserGeneratedTales();
+
+    // 특정 옵션에 해당하는 동화 리스트를 반환
+    List<TaleSummaryResponseDto> getUserGeneratedTalesByOptions(TaleOptionSearchRequestDto request);
 
     // 특정 ID에 해당하는 동화 정보를 수정하고, 수정된 결과를 반환
     TaleDto updateTale(Long taleId, TaleDto request);
