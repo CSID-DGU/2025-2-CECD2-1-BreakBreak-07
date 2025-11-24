@@ -12,4 +12,5 @@ public class SigninResponseDto {
     private String message;
     private String token;
     private String role;
+    private String name;
 }
