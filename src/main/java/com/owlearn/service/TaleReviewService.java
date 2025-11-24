@@ -102,10 +102,12 @@ public class TaleReviewService {
     }
 
     private TaleReviewResponseDto toDto(TaleReview review) {
+
         return TaleReviewResponseDto.builder()
                 .reviewId(review.getId())
                 .childId(review.getChild().getId())
                 .taleId(review.getTale().getId())
+                .title(review.getTale().getTitle())
                 .rating(review.getRating())
                 .feeling(review.getFeeling())
                 .memorableScene(review.getMemorableScene())
