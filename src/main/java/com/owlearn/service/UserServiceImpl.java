@@ -2,6 +2,7 @@ package com.owlearn.service;
 
 import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.request.AddChildRequestDto;
+import com.owlearn.dto.request.DeleteChildrenRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -170,6 +171,22 @@ public class UserServiceImpl implements UserService {
                 .id(child.getId())
                 .name(child.getName())
                 .characterImageUrl(child.getCharacterImageUrl())
+                .build();
+    }
+
+    @Override
+    public NotifyResponseDto deleteChildren(DeleteChildrenRequestDto req, String userId) {
+
+        List<Child> children = childRepository.findAllByIdInAndUser_UserId(req.getChildIds(), userId);
+
+        if(children.size() != req.getChildIds().size()){
+            throw new ApiException(ErrorDefine.ACCESS_DENIED);
+        }
+
+        childRepository.deleteAll(children);
+
+        return NotifyResponseDto.builder()
+                .message("자녀가 삭제되었습니다.")
                 .build();
     }
 

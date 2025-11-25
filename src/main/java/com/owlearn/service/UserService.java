@@ -1,6 +1,7 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.request.AddChildRequestDto;
+import com.owlearn.dto.request.DeleteChildrenRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -30,4 +31,7 @@ public interface UserService {
 
     // 아이가 최근에 읽은 동화 반환
     ChildDetailResponseDto getChildDetail(Long childId, String userId);
+
+    // 여러 자녀 삭제
+    NotifyResponseDto deleteChildren(DeleteChildrenRequestDto req, String userId);
 }

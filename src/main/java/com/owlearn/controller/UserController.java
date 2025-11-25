@@ -2,6 +2,7 @@ package com.owlearn.controller;
 
 import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.request.AddChildRequestDto;
+import com.owlearn.dto.request.DeleteChildrenRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -98,5 +99,13 @@ public class UserController {
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(userService.addChild(userId, addChildRequestDto));
+    }
+
+    @DeleteMapping("/child")
+    public ResponseDto<NotifyResponseDto> deleteChildren(
+            @RequestBody DeleteChildrenRequestDto deleteChildrenRequestDto
+    ) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(userService.deleteChildren(deleteChildrenRequestDto, userId));
     }
 }
