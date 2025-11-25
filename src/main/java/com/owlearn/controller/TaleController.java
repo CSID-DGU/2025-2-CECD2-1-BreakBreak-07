@@ -87,7 +87,7 @@ public class TaleController {
      * 기성동화(PREMADE)만 조회
      */
     @GetMapping("/premade")
-    public ResponseDto<List<TaleSummaryResponseDto>> getPremadeTales() {
+    public ResponseDto<List<PremadeTaleResponseDto>> getPremadeTales() {
         return new ResponseDto<>(taleService.getPremadeTales());
     }
 
