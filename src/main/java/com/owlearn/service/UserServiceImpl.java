@@ -2,24 +2,29 @@ package com.owlearn.service;
 
 import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.request.AddChildRequestDto;
+import com.owlearn.dto.request.BuyItemRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
 import com.owlearn.entity.Child;
+import com.owlearn.entity.ChildItem;
+import com.owlearn.entity.Item;
 import com.owlearn.entity.User;
 import com.owlearn.exception.ApiException;
 import com.owlearn.exception.ErrorDefine;
-import com.owlearn.repository.ChildRepository;
-import com.owlearn.repository.TaleRepository;
-import com.owlearn.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.owlearn.repository.*;
+import jakarta.persistence.*;
+import lombok.*;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -29,13 +34,17 @@ public class UserServiceImpl implements UserService {
     private final ChildRepository childRepository;
     private final TaleRepository taleRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ItemRepository itemRepository;
+    private final ChildItemRepository childItemRepository;
 
-    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository, JwtTokenProvider jwtTokenProvider) {
+    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository, JwtTokenProvider jwtTokenProvider, ItemRepository itemRepository, ChildItemRepository childItemRepository) {
         this.userRepository = userRepository;
         this.imageStorage = localImageStorage;
         this.childRepository = childRepository;
         this.taleRepository = taleRepository;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.itemRepository = itemRepository;
+        this.childItemRepository = childItemRepository;
     }
 
     @Override
@@ -96,13 +105,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CharacterResponseDto getCharacter(Long childId, String userId) {
+
         Child child = childRepository.findByIdAndUser_UserId(childId, userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
 
+        List<Item> allItems = itemRepository.findAll();
+
+        List<ChildItem> childItems = childItemRepository.findByChildId(childId);
+
+        Map<Long, Boolean> ownedMap = childItems.stream()
+                .collect(Collectors.toMap(
+                        ci -> ci.getItem().getId(),
+                        ChildItem::getOwned
+                ));
+
+        List<ItemStatusResponseDto> itemStatusList = allItems.stream()
+                .map(item -> ItemStatusResponseDto.builder()
+                        .itemId(item.getId())
+                        .name(item.getName())
+                        .category(item.getCategory())
+                        .owned(ownedMap.getOrDefault(item.getId(), false)) // 없으면 false
+                        .build()
+                )
+                .toList();
+
         return CharacterResponseDto.builder()
                 .imageUrl(child.getCharacterImageUrl())
+                .items(itemStatusList)
                 .build();
     }
+
 
     @Override
     public CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image) {
@@ -169,8 +201,38 @@ public class UserServiceImpl implements UserService {
                 .id(child.getId())
                 .name(child.getName())
                 .characterImageUrl(child.getCharacterImageUrl())
+                .credit(child.getCredit())
                 .build();
     }
 
+    @Override
+    @Transactional
+    public NotifyResponseDto buyItem(String userId, Long childId, BuyItemRequestDto buyItemRequestDto) {
+
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
+
+        Long itemId = buyItemRequestDto.getItemId();
+        Integer price = buyItemRequestDto.getPrice();
+
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ITEM_NOT_FOUND));
+
+        if (child.getCredit() < price) {
+            throw new ApiException(ErrorDefine.NOT_ENOUGH_CREDIT);
+        }
+
+        child.setCredit(child.getCredit() - price);
+        childRepository.save(child);
+
+        ChildItem childItem = ChildItem.builder()
+                .child(child)
+                .item(item)
+                .build();
+
+        childItemRepository.save(childItem);
+
+        return new NotifyResponseDto("아이템 구매 완료!");
+    }
 
 }

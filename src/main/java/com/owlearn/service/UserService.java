@@ -1,6 +1,7 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.request.AddChildRequestDto;
+import com.owlearn.dto.request.BuyItemRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -18,6 +19,8 @@ public interface UserService {
 
     NotifyResponseDto checkId(String userId);
 
+    NotifyResponseDto buyItem(String userId, Long childId, BuyItemRequestDto buyItemRequestDto);
+
     CharacterResponseDto getCharacter(Long childId, String userId);
 
     CharacterResponseDto uploadOrUpdateCharacter(Long childId, String userId, MultipartFile image);
@@ -30,4 +33,5 @@ public interface UserService {
 
     // 아이가 최근에 읽은 동화 반환
     ChildDetailResponseDto getChildDetail(Long childId, String userId);
+
 }
