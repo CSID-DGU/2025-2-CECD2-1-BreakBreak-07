@@ -30,7 +30,16 @@ public class Child {
     private Integer age;
 
     @Column
-    private String prefer;
+    private String preferSubject;
+
+    @Column
+    private String preferTone;
+
+    @Column
+    private String preferArtstyle;
+
+    @Column
+    private String preferAge;
 
     @Column
     private String characterImageUrl;
