@@ -3,6 +3,9 @@ package com.owlearn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="childs")
 @Getter
@@ -34,4 +37,15 @@ public class Child {
 
     @Column
     private Integer credit = 0;
+
+    @OneToMany(mappedBy = "child",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private List<ChildWord> words = new ArrayList<>();
+
+    @OneToMany(mappedBy = "child",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private List<TaleReview> reviews = new ArrayList<>();
+
 }

@@ -7,6 +7,7 @@ import com.owlearn.dto.request.ChildTaleRequestDto;
 import com.owlearn.dto.response.ImageGenerateResponseDto;
 import com.owlearn.dto.response.TaleIdResponseDto;
 import com.owlearn.dto.response.TextGenerateResponseDto;
+import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.Tale;
 import com.owlearn.exception.ApiException;
@@ -15,6 +16,7 @@ import com.owlearn.repository.ChildRepository;
 import com.owlearn.repository.TaleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -43,6 +45,7 @@ public class TaleAiService {
 
     private static final String TEXT_ENDPOINT  = "http://localhost:8000/ai/text-generate";
     private static final String IMAGE_ENDPOINT = "http://localhost:8000/ai/image-generate";
+    private static final String VOCAB_ENDPOINT = "http://localhost:8000/ai/vocab";
     private static final String SAVE_DIR  = "/home/ubuntu/static/";
     private static final String PUB_PREFIX = "/images/";
 
@@ -76,6 +79,7 @@ public class TaleAiService {
 
         String artStyle = originalTale.getArtStyle();
 
+        List<VocabResponseDto> vocabList = callVocabGenerate(contents);
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, artStyle);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
@@ -95,7 +99,10 @@ public class TaleAiService {
 
         newTale = taleRepository.save(newTale);
 
-        return TaleIdResponseDto.builder().taleId(newTale.getId()).build();
+        return TaleIdResponseDto.builder()
+                .taleId(newTale.getId())
+                .words(vocabList)
+                .build();
     }
 
     // =========================
@@ -137,6 +144,7 @@ public class TaleAiService {
                 .filter(url -> !url.isBlank())
                 .orElse(null);
 
+        List<VocabResponseDto> vocabList = callVocabGenerate(contents);
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, req.getArtStyle());
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
@@ -146,6 +154,7 @@ public class TaleAiService {
         return TaleIdResponseDto.builder()
                 .taleId(tale.getId())
                 .reason(text.getReason())
+                .words(vocabList)
                 .build();
     }
 
@@ -177,6 +186,32 @@ public class TaleAiService {
             throw new IllegalStateException("FastAPI 텍스트 생성 실패 또는 비정상 응답");
         }
         return body;
+    }
+
+    private List<VocabResponseDto> callVocabGenerate(List<String> contents) {
+        try {
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("contents", contents);
+
+            HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(payload, jsonHeaders());
+
+            ResponseEntity<List<VocabResponseDto>> resp = restTemplate.exchange(
+                    URI.create(VOCAB_ENDPOINT),
+                    HttpMethod.POST,
+                    httpEntity,
+                    new ParameterizedTypeReference<List<VocabResponseDto>>() {}
+            );
+
+            List<VocabResponseDto> body = (resp != null) ? resp.getBody() : null;
+            if (body == null) {
+                // vocab 실패하면 빈 리스트로 반환
+                return Collections.emptyList();
+            }
+            return body;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     /** 원격 URL들 다운로드 → 로컬 저장 → 공개 URL 목록 반환 */
