@@ -3,6 +3,9 @@ package com.owlearn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="childs")
 @Getter
@@ -31,4 +34,10 @@ public class Child {
 
     @Column
     private String characterImageUrl;
+
+    @OneToMany(mappedBy = "child",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private List<ChildWord> words = new ArrayList<>();
+
 }

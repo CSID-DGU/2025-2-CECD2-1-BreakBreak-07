@@ -101,7 +101,7 @@ public class TaleAiService {
 
         return TaleIdResponseDto.builder()
                 .taleId(newTale.getId())
-                .vacabList(vocabList)
+                .words(vocabList)
                 .build();
     }
 
@@ -154,7 +154,7 @@ public class TaleAiService {
         return TaleIdResponseDto.builder()
                 .taleId(tale.getId())
                 .reason(text.getReason())
-                .vacabList(vocabList)
+                .words(vocabList)
                 .build();
     }
 
