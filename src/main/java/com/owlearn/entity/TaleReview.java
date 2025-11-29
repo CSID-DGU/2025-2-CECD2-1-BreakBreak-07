@@ -33,15 +33,6 @@ public class TaleReview {
     @Column(columnDefinition = "TEXT")
     private String feeling;          // 읽고 난 기분
 
-    @Column(columnDefinition = "TEXT")
-    private String memorableScene;   // 기억에 남는 장면
-
-    @Column(columnDefinition = "TEXT")
-    private String lesson;           // 배운 점
-
-    @Column(columnDefinition = "TEXT")
-    private String question;         // 질문
-
     private LocalDateTime createdAt;
 
     @PrePersist

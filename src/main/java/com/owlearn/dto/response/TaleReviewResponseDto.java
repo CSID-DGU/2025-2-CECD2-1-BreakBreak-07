@@ -16,8 +16,5 @@ public class TaleReviewResponseDto {
     private String title;
     private Integer rating;
     private String feeling;
-    private String memorableScene;
-    private String lesson;
-    private String question;
     private LocalDateTime createdAt;
 }

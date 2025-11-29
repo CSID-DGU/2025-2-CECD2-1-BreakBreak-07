@@ -49,9 +49,6 @@ public class TaleReviewService {
                 .tale(tale)
                 .rating(req.getRating())
                 .feeling(req.getFeeling())
-                .memorableScene(req.getMemorableScene())
-                .lesson(req.getLesson())
-                .question(req.getQuestion())
                 .build();
 
         TaleReview saved = taleReviewRepository.save(review);
@@ -110,9 +107,6 @@ public class TaleReviewService {
                 .title(review.getTale().getTitle())
                 .rating(review.getRating())
                 .feeling(review.getFeeling())
-                .memorableScene(review.getMemorableScene())
-                .lesson(review.getLesson())
-                .question(review.getQuestion())
                 .createdAt(review.getCreatedAt())
                 .build();
     }

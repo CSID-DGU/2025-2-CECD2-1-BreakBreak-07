@@ -10,7 +10,4 @@ import lombok.*;
 public class TaleReviewCreateRequestDto {
     private Integer rating;
     private String feeling;
-    private String memorableScene;
-    private String lesson;
-    private String question;
 }
