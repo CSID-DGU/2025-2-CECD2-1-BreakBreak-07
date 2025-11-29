@@ -11,6 +11,7 @@ public enum ErrorDefine {
     INVALID_ARGUMENT("4000", HttpStatus.BAD_REQUEST, "Bad Request: Invalid Arguments"),
     NOT_END_POINT("4001",HttpStatus.BAD_REQUEST , "Bad Request: Not Exist End Point Error"),
     OVER_ITEM_AMOUNT("4002", HttpStatus.BAD_REQUEST, "Bad Request: Over Item Amount"),
+    NOT_ENOUGH_CREDIT("4003", HttpStatus.BAD_REQUEST, "Bad Request: Not Enough Credit"),
     // UNAUTHORIZED: 401
     ACCESS_DENIED("4010", HttpStatus.UNAUTHORIZED, "Unauthorized: Access denied"),
     TOKEN_INVALID("4011", HttpStatus.UNAUTHORIZED, "Unauthorized: Invalid Token"),
@@ -25,6 +26,7 @@ public enum ErrorDefine {
     CHILD_NOT_FOUND("4041", HttpStatus.NOT_FOUND, "Not Found: Child Not Found"),
     TALE_NOT_FOUND("4042", HttpStatus.NOT_FOUND, "Not Found: Tale Not Found"),
     REVIEW_NOT_FOUND("4043", HttpStatus.NOT_FOUND, "Not Found: Review Not Found"),
+    ITEM_NOT_FOUND("4044", HttpStatus.NOT_FOUND, "Not Found: Item Not Found"),
     // CONFLICT: 409
     USER_EXIST("4090", HttpStatus.CONFLICT, "Conflict: An account with this userNickname already exists."),
     USERID_EXIST("4091", HttpStatus.CONFLICT, "Conflict: An account with this userId already exists."),

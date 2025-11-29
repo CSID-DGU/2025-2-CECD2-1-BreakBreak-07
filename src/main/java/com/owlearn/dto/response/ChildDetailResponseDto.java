@@ -11,4 +11,5 @@ public class ChildDetailResponseDto {
     private Long id;
     private String name;
     private String characterImageUrl;
+    private Integer credit;
 }
