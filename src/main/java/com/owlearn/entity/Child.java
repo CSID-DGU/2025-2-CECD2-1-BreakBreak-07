@@ -35,9 +35,17 @@ public class Child {
     @Column
     private String characterImageUrl;
 
+    @Column
+    private Integer credit = 0;
+
     @OneToMany(mappedBy = "child",
             cascade = CascadeType.REMOVE,
             orphanRemoval = true)
     private List<ChildWord> words = new ArrayList<>();
+
+    @OneToMany(mappedBy = "child",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private List<TaleReview> reviews = new ArrayList<>();
 
 }
