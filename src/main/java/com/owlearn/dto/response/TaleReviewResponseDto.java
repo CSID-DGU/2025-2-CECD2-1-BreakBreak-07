@@ -13,10 +13,8 @@ public class TaleReviewResponseDto {
     private Long reviewId;
     private Long childId;
     private Long taleId;
+    private String title;
     private Integer rating;
     private String feeling;
-    private String memorableScene;
-    private String lesson;
-    private String question;
     private LocalDateTime createdAt;
 }

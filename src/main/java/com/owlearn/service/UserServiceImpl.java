@@ -3,6 +3,7 @@ package com.owlearn.service;
 import com.owlearn.config.JwtTokenProvider;
 import com.owlearn.dto.request.AddChildRequestDto;
 import com.owlearn.dto.request.BuyItemRequestDto;
+import com.owlearn.dto.request.DeleteChildrenRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
 import com.owlearn.dto.response.*;
@@ -78,6 +79,7 @@ public class UserServiceImpl implements UserService {
                 .message("로그인 성공")
                 .token(token) // NotifyResponseDto에 token 필드 추가 가능
                 .role(user.getRole())
+                .name(user.getName())
                 .build();
     }
 
@@ -234,5 +236,20 @@ public class UserServiceImpl implements UserService {
 
         return new NotifyResponseDto("아이템 구매 완료!");
     }
+    public NotifyResponseDto deleteChildren(DeleteChildrenRequestDto req, String userId) {
+
+        List<Child> children = childRepository.findAllByIdInAndUser_UserId(req.getChildIds(), userId);
+
+        if(children.size() != req.getChildIds().size()){
+            throw new ApiException(ErrorDefine.ACCESS_DENIED);
+        }
+
+        childRepository.deleteAll(children);
+
+        return NotifyResponseDto.builder()
+                .message("자녀가 삭제되었습니다.")
+                .build();
+    }
+
 
 }

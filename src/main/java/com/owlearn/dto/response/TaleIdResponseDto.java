@@ -9,4 +9,5 @@ import lombok.*;
 @Builder
 public class TaleIdResponseDto {
     private Long taleId;
+    private String reason;
 }

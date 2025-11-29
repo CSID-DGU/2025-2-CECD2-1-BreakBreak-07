@@ -4,10 +4,7 @@ import com.owlearn.dto.TaleDto;
 
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.TaleOptionSearchRequestDto;
-import com.owlearn.dto.response.ChildDetailResponseDto;
-import com.owlearn.dto.response.TaleDetailResponseDto;
-import com.owlearn.dto.response.TaleResponseDto;
-import com.owlearn.dto.response.TaleSummaryResponseDto;
+import com.owlearn.dto.response.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +21,8 @@ public interface TaleService {
     // 모든 동화의 상세 정보를 리스트로 반환
     List<TaleSummaryResponseDto> getAllTales();
 
-    List<TaleSummaryResponseDto> getPremadeTales();
+    // 기성동화 조회
+    List<PremadeTaleResponseDto> getPremadeTales();
 
     List<TaleSummaryResponseDto> getUserGeneratedTales();
 

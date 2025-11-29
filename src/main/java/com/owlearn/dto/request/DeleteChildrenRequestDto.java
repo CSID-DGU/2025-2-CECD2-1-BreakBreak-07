@@ -2,12 +2,15 @@ package com.owlearn.dto.request;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaleReviewCreateRequestDto {
-    private Integer rating;
-    private String feeling;
+public class DeleteChildrenRequestDto {
+
+    private List<Long> childIds;
 }
+

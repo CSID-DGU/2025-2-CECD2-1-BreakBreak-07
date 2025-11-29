@@ -74,7 +74,7 @@ public class TaleAiService {
                 .filter(url -> !url.isBlank())
                 .orElse(null);
 
-        String artStyle = "illustration";
+        String artStyle = originalTale.getArtStyle();
 
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, artStyle);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
@@ -143,7 +143,10 @@ public class TaleAiService {
         tale.setImageUrls(localUrls);
         taleRepository.save(tale);
 
-        return TaleIdResponseDto.builder().taleId(tale.getId()).build();
+        return TaleIdResponseDto.builder()
+                .taleId(tale.getId())
+                .reason(text.getReason())
+                .build();
     }
 
     // ======== 내부 공통 ========
