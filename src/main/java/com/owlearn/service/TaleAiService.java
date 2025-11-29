@@ -54,6 +54,22 @@ public class TaleAiService {
         catch (IOException e) { throw new RuntimeException("이미지 저장 폴더 생성 실패: " + SAVE_DIR, e); }
     }
 
+    public TaleDetailResponseDto getTaleDetail(Long taleId) {
+        Tale tale = taleRepository.findById(taleId).orElseThrow();
+
+        List<String> contents = tale.getContents();
+        List<VocabResponseDto> vocabList = callVocabGenerate(contents);
+
+        return TaleDetailResponseDto.builder()
+                .title(tale.getTitle())
+                .contents(contents)
+                .imageUrls(tale.getImageUrls())
+                .type(tale.getType().name())
+                .words(vocabList)
+                .createdAt(tale.getCreatedAt() != null ? tale.getCreatedAt().toString() : null)
+                .build();
+    }
+
     // =========================
     // 1) 기존 동화로 이미지 생성
     // =========================
@@ -74,8 +90,6 @@ public class TaleAiService {
                 .orElse(null);
 
         String artStyle = originalTale.getArtStyle();
-
-        List<VocabResponseDto> vocabList = callVocabGenerate(contents);
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, artStyle);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
@@ -97,7 +111,6 @@ public class TaleAiService {
 
         return TaleIdResponseDto.builder()
                 .taleId(newTale.getId())
-                .words(vocabList)
                 .build();
     }
 
@@ -140,7 +153,6 @@ public class TaleAiService {
                 .filter(url -> !url.isBlank())
                 .orElse(null);
 
-        List<VocabResponseDto> vocabList = callVocabGenerate(contents);
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, req.getArtStyle());
         List<String> localUrls = ingestRemoteImages(remoteUrls);
 
@@ -150,7 +162,6 @@ public class TaleAiService {
         return TaleIdResponseDto.builder()
                 .taleId(tale.getId())
                 .reason(text.getReason())
-                .words(vocabList)
                 .build();
     }
 

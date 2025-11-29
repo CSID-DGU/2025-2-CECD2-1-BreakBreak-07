@@ -4,6 +4,7 @@ package com.owlearn.service;
 
 import com.owlearn.dto.request.ChildWordSaveRequestDto;
 import com.owlearn.dto.response.NotifyResponseDto;
+import com.owlearn.dto.response.VocabDto;
 import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.ChildWord;
@@ -65,14 +66,14 @@ public class ChildWordService {
      * 해당 자녀의 모든 단어장 목록 조회
      */
     @Transactional(readOnly = true)
-    public List<VocabResponseDto> getChildWords(String userId, Long childId) {
+    public List<VocabDto> getChildWords(String userId, Long childId) {
         // 자녀 소유 검증
         Child child = childRepository.findByIdAndUser_UserId(childId, userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
 
         return childWordRepository.findAllByChild_IdOrderByIdDesc(child.getId())
                 .stream()
-                .map(w -> VocabResponseDto.builder()
+                .map(w -> VocabDto.builder()
                         .word(w.getWord())
                         .meaning(w.getMeaning())
                         .build())

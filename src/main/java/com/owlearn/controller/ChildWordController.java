@@ -5,6 +5,7 @@ package com.owlearn.controller;
 import com.owlearn.dto.request.ChildWordSaveRequestDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.ResponseDto;
+import com.owlearn.dto.response.VocabDto;
 import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.service.ChildWordService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class ChildWordController {
      * 해당 자녀의 모든 단어 조회
      */
     @GetMapping
-    public ResponseDto<List<VocabResponseDto>> getWords(
+    public ResponseDto<List<VocabDto>> getWords(
             Principal principal,
             @PathVariable Long childId
     ) {
