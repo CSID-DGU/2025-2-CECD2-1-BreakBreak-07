@@ -11,7 +11,9 @@ public class ChildResponseDto {
     private Long id;
     private String name;
     private Integer age;
-    private String prefer;
-    private String characterImageUrl;
+    private String preferSubject;
+    private String preferTone;
+    private String preferStyle;
+    private String preferAge;
     private Integer taleCount;
 }
