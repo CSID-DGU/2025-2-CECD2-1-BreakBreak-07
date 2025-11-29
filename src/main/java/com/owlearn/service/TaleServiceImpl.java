@@ -3,10 +3,7 @@ package com.owlearn.service;
 import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.TaleOptionSearchRequestDto;
-import com.owlearn.dto.response.ChildDetailResponseDto;
-import com.owlearn.dto.response.TaleDetailResponseDto;
-import com.owlearn.dto.response.TaleResponseDto;
-import com.owlearn.dto.response.TaleSummaryResponseDto;
+import com.owlearn.dto.response.*;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.Quiz;
 import com.owlearn.entity.Tale;
@@ -80,9 +77,16 @@ public class TaleServiceImpl implements TaleService {
     }
 
     @Override
-    public List<TaleSummaryResponseDto> getPremadeTales() {
+    public List<PremadeTaleResponseDto> getPremadeTales() {
         return taleRepository.findByType(Tale.TaleType.PREMADE).stream()
-                .map(t -> new TaleSummaryResponseDto(t.getId(), t.getTitle(), t.getType().name(), null))
+                .map(t -> new PremadeTaleResponseDto(
+                        t.getId(),
+                        t.getTitle(),
+                        t.getType().name(),
+                        t.getSubject(),
+                        t.getTone(),
+                        t.getArtStyle(),
+                        t.getAgeGroup()))
                 .collect(Collectors.toList());
     }
 
