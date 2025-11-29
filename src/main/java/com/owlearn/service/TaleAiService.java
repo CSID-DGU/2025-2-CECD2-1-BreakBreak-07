@@ -143,7 +143,10 @@ public class TaleAiService {
         tale.setImageUrls(localUrls);
         taleRepository.save(tale);
 
-        return TaleIdResponseDto.builder().taleId(tale.getId()).build();
+        return TaleIdResponseDto.builder()
+                .taleId(tale.getId())
+                .reason(text.getReason())
+                .build();
     }
 
     // ======== 내부 공통 ========

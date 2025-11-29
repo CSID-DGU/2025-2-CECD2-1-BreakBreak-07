@@ -13,4 +13,5 @@ public class TextGenerateResponseDto {
     private String title;
     private List<String> contents;
     private Integer score;
+    private String reason;
 }
