@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +54,8 @@ public class TaleReviewService {
                 .build();
 
         TaleReview saved = taleReviewRepository.save(review);
+
+        updateChildPrefer(childId);
 
         return toDto(saved);
     }
@@ -122,5 +126,66 @@ public class TaleReviewService {
         return ReportSummaryDto.builder()
                 .totalCount(count)
                 .build();
+    }
+
+    private void updateChildPrefer(Long childId) {
+
+        Child child = childRepository.findById(childId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
+
+        // 1. Subject 옵션 업데이트
+        // 해당 아이가 리뷰한 Subject 옵션 중 가장 높은 평균 평점을 가진 값(Value)을 찾습니다.
+        String preferredSubject = findHighestRatedOption(
+                taleReviewRepository.findAverageRatingBySubject(childId)
+        );
+        if (preferredSubject != null) {
+            child.setPreferSubject(preferredSubject);
+        }
+
+        // 2. Tone 옵션 업데이트
+        String preferredTone = findHighestRatedOption(
+                taleReviewRepository.findAverageRatingByTone(childId)
+        );
+        if (preferredTone != null) {
+            child.setPreferTone(preferredTone);
+        }
+
+        // 3. ArtStyle 옵션 업데이트
+        String preferredArtStyle = findHighestRatedOption(
+                taleReviewRepository.findAverageRatingByArtStyle(childId)
+        );
+        if (preferredArtStyle != null) {
+            child.setPreferArtstyle(preferredArtStyle);
+        }
+
+        // 4. AgeGroup 옵션 업데이트
+        String preferredAgeGroup = findHighestRatedOption(
+                taleReviewRepository.findAverageRatingByAgeGroup(childId)
+        );
+        if (preferredAgeGroup != null) {
+            child.setPreferAge(preferredAgeGroup);
+        }
+
+        // 데이터베이스에 변경 사항을 일괄 저장합니다.
+        childRepository.save(child);
+    }
+
+    private String findHighestRatedOption(List<Object[]> ratingsAndOptions) {
+        String bestOptionValue = null;
+        Double maxRating = -1.0;
+
+        for (Object[] result : ratingsAndOptions) {
+            // result[0]: 옵션 값 (예: "과학"), result[1]: 평균 평점 (예: 4.5)
+            String optionValue = (String) result[0];
+            Double avgRating = ((Number) result[1]).doubleValue();
+
+            if (avgRating > maxRating) {
+                maxRating = avgRating;
+                bestOptionValue = optionValue;
+            }
+        }
+
+        // 가장 높은 평점을 가진 옵션 값(예: "공룡")을 반환합니다.
+        return bestOptionValue;
     }
 }

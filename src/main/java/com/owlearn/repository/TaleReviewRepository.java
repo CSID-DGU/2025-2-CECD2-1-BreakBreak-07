@@ -22,5 +22,30 @@ public interface TaleReviewRepository extends JpaRepository<TaleReview, Long> {
     """)
     List<Object[]> findAvgScoreByTaleIds(@Param("taleIds") List<Long> taleIds);
 
+    // Subject 옵션별 평균 평점 계산 쿼리
+    @Query("SELECT t.subject, AVG(r.rating) " +
+            "FROM TaleReview r JOIN r.tale t " + // <--- r.tale을 통해 t에 접근
+            "WHERE r.child.id = :childId " +
+            "GROUP BY t.subject")
+    List<Object[]> findAverageRatingBySubject(@Param("childId") Long childId);
+
+    // Tone 옵션별 평균 평점 계산 쿼리
+    @Query("SELECT t.tone, AVG(r.rating) " +
+            "FROM TaleReview r JOIN r.tale t " + // <--- r.tale을 통해 t에 접근
+            "WHERE r.child.id = :childId " +
+            "GROUP BY t.tone")
+    List<Object[]> findAverageRatingByTone(@Param("childId") Long childId);
+
+    @Query("SELECT t.artStyle, AVG(r.rating) " +
+            "FROM TaleReview r JOIN r.tale t " + // <--- r.tale을 통해 t에 접근
+            "WHERE r.child.id = :childId " +
+            "GROUP BY t.artStyle")
+    List<Object[]> findAverageRatingByArtStyle(@Param("childId") Long childId);
+
+    @Query("SELECT t.ageGroup, AVG(r.rating) " +
+            "FROM TaleReview r JOIN r.tale t " + // <--- r.tale을 통해 t에 접근
+            "WHERE r.child.id = :childId " +
+            "GROUP BY t.ageGroup")
+    List<Object[]> findAverageRatingByAgeGroup(@Param("childId") Long childId);
     int countByChildId(Long childId);
 }
