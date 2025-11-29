@@ -1,6 +1,7 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.request.AddChildRequestDto;
+import com.owlearn.dto.request.BuyItemRequestDto;
 import com.owlearn.dto.request.DeleteChildrenRequestDto;
 import com.owlearn.dto.request.SigninRequestDto;
 import com.owlearn.dto.request.SignupRequestDto;
@@ -18,6 +19,8 @@ public interface UserService {
     NotifyResponseDto modify(SignupRequestDto signupRequestDto);
 
     NotifyResponseDto checkId(String userId);
+
+    NotifyResponseDto buyItem(String userId, Long childId, BuyItemRequestDto buyItemRequestDto);
 
     CharacterResponseDto getCharacter(Long childId, String userId);
 

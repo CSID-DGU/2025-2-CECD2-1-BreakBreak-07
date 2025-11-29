@@ -31,4 +31,7 @@ public class Child {
 
     @Column
     private String characterImageUrl;
+
+    @Column
+    private Integer credit = 0;
 }
