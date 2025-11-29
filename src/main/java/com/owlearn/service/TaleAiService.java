@@ -74,7 +74,7 @@ public class TaleAiService {
                 .filter(url -> !url.isBlank())
                 .orElse(null);
 
-        String artStyle = "illustration";
+        String artStyle = originalTale.getArtStyle();
 
         List<String> remoteUrls = callImageGenerate(contents, refImgUrl, artStyle);
         List<String> localUrls = ingestRemoteImages(remoteUrls);
