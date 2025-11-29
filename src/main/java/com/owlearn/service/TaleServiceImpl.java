@@ -14,9 +14,10 @@ import com.owlearn.entity.User;
 import com.owlearn.exception.ApiException;
 import com.owlearn.exception.ErrorDefine;
 import com.owlearn.repository.ChildRepository;
-import com.owlearn.repository.TaleRepository;
+import com.owlearn.repository.TaleRepository;import com.owlearn.repository.TaleReviewRepository;
 import com.owlearn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -27,10 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +39,7 @@ public class TaleServiceImpl implements TaleService {
     private final RestTemplate restTemplate;
     private final ChildRepository childRepository;
     private final UserRepository userRepository;
+    private final TaleReviewRepository taleReviewRepository;
 
     @Override
     public TaleDetailResponseDto getTale(Long taleId) {
@@ -97,7 +96,7 @@ public class TaleServiceImpl implements TaleService {
     @Override
     @Transactional(readOnly = true)
     public List<TaleSummaryResponseDto> getUserGeneratedTalesByOptions(TaleOptionSearchRequestDto request) {
-        List<Tale> tales = taleRepository.findByTypeAndSubjectAndToneAndArtStyleAndAgeGroup(
+        List<Tale> candidateTales = taleRepository.findByTypeAndSubjectAndToneAndArtStyleAndAgeGroup(
                 Tale.TaleType.USER_GENERATED,
                 request.getSubject(),
                 request.getTone(),
@@ -105,7 +104,31 @@ public class TaleServiceImpl implements TaleService {
                 request.getAgeGroup()
         );
 
-        return tales.stream()
+        if (candidateTales.isEmpty()) {
+            throw new ApiException(ErrorDefine.TALE_NOT_FOUND);
+        }
+
+        List<Long> taleIds = candidateTales.stream()
+                .map(Tale::getId)
+                .toList();
+
+        List<Object[]> avgScores = taleReviewRepository.findAvgScoreByTaleIds(taleIds);
+
+        Map<Long, Double> avgScoreMap = avgScores.stream()
+                .collect(Collectors.toMap(
+                        obj -> (Long) obj[0],
+                        obj -> (Double) obj[1]
+                ));
+
+        List<Tale> topTales = candidateTales.stream()
+                .sorted((t1, t2) -> Double.compare(
+                        avgScoreMap.getOrDefault(t2.getId(), 0.0),
+                        avgScoreMap.getOrDefault(t1.getId(), 0.0)
+                ))
+                .limit(3)
+                .toList();
+
+        return topTales.stream()
                 .map(tale -> TaleSummaryResponseDto.builder()
                         .id(tale.getId())
                         .title(tale.getTitle())
