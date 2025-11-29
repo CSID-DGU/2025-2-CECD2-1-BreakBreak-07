@@ -1,13 +1,7 @@
 package com.owlearn.service;
 
-import com.owlearn.dto.request.ImageGenerateRequestDto;
-import com.owlearn.dto.request.TaleCreateRequestDto;
-import com.owlearn.dto.request.TextGenerateRequestDto;
-import com.owlearn.dto.request.ChildTaleRequestDto;
-import com.owlearn.dto.response.ImageGenerateResponseDto;
-import com.owlearn.dto.response.TaleIdResponseDto;
-import com.owlearn.dto.response.TextGenerateResponseDto;
-import com.owlearn.dto.response.VocabResponseDto;
+import com.owlearn.dto.request.*;
+import com.owlearn.dto.response.*;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.Tale;
 import com.owlearn.exception.ApiException;
@@ -19,6 +13,7 @@ import lombok.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -46,6 +41,7 @@ public class TaleAiService {
     private static final String TEXT_ENDPOINT  = "http://localhost:8000/ai/text-generate";
     private static final String IMAGE_ENDPOINT = "http://localhost:8000/ai/image-generate";
     private static final String VOCAB_ENDPOINT = "http://localhost:8000/ai/vocab";
+    private static final String RETELL_ENDPOINT = "http://localhost:8000/ai/retell";
     private static final String SAVE_DIR  = "/home/ubuntu/static/";
     private static final String PUB_PREFIX = "/images/";
 
@@ -158,6 +154,45 @@ public class TaleAiService {
                 .build();
     }
 
+    @Transactional
+    public RetellEvalResponseDto evaluateRetelling(String userId, Long taleId, TaleRetellRequestDto req) {
+
+        // 1) 자녀 검증
+        Child child = childRepository.findByIdAndUser_UserId(req.getChildId(), userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
+
+        // 2) 동화 조회
+        Tale tale = taleRepository.findById(taleId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.TALE_NOT_FOUND));
+
+        List<String> contents = tale.getContents();
+        if (contents == null || contents.isEmpty()) {
+            throw new IllegalStateException("동화 내용이 비어 있습니다.");
+        }
+
+        int idx = req.getSceneIndex();
+        if (idx < 0 || idx >= contents.size()) {
+            throw new IllegalArgumentException("유효하지 않은 장면 번호입니다: " + idx);
+        }
+
+        String originalScene = contents.get(idx);
+        String userDescription = req.getUserDescription();
+
+        // 3) FastAPI 리텔링 평가 요청
+        RetellEvalResponseDto eval = callRetellEval(originalScene, userDescription);
+
+        // 4) 크레딧 반영
+        Integer credit = eval.getCredit();
+        if (credit != null && credit > 0) {
+            child.addCredit(credit);
+            childRepository.save(child);
+        }
+
+        // 5) 프론트로는 피드백만 응답 (요구사항대로)
+        return eval;
+    }
+
+
     // ======== 내부 공통 ========
     private List<String> callImageGenerate(List<String> prompts, String refImgUrl, String artStyle) {
         ImageGenerateRequestDto payload = new ImageGenerateRequestDto(prompts, refImgUrl, artStyle);
@@ -249,4 +284,27 @@ public class TaleAiService {
             throw new IllegalStateException("이미지 저장 실패: " + filename, e);
         }
     }
+
+    private RetellEvalResponseDto callRetellEval(String originalScene, String userDescription) {
+
+        Map<String, String> payload = new HashMap<>();
+        payload.put("original_scene", originalScene);
+        payload.put("user_description", userDescription);
+
+        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(payload, jsonHeaders());
+
+        ResponseEntity<RetellEvalResponseDto> resp = restTemplate.exchange(
+                URI.create(RETELL_ENDPOINT),
+                HttpMethod.POST,
+                httpEntity,
+                RetellEvalResponseDto.class
+        );
+
+        RetellEvalResponseDto body = (resp != null) ? resp.getBody() : null;
+        if (body == null || body.getFeedback() == null || body.getCredit() == null) {
+            throw new IllegalStateException("FastAPI 리텔링 평가 응답이 비정상입니다.");
+        }
+        return body;
+    }
+
 }

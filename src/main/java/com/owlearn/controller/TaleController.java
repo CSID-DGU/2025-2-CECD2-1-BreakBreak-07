@@ -6,6 +6,7 @@ import com.owlearn.dto.*;
 import com.owlearn.dto.request.TaleCreateRequestDto;
 import com.owlearn.dto.request.ChildTaleRequestDto;
 import com.owlearn.dto.request.TaleOptionSearchRequestDto;
+import com.owlearn.dto.request.TaleRetellRequestDto;
 import com.owlearn.dto.response.*;
 import com.owlearn.service.TaleAiService;
 import com.owlearn.service.TaleService;
@@ -131,4 +132,17 @@ public class TaleController {
         taleService.deleteTale(taleId);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 리텔링 api
+     */
+    @PostMapping("/{taleId}/retell")
+    public ResponseDto<RetellEvalResponseDto> retell(
+            @PathVariable Long taleId,
+            @RequestBody TaleRetellRequestDto requestDto
+    ) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(taleAiService.evaluateRetelling(userId, taleId, requestDto));
+    }
+
 }

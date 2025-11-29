@@ -48,4 +48,8 @@ public class Child {
             orphanRemoval = true)
     private List<TaleReview> reviews = new ArrayList<>();
 
+    public void addCredit(int delta) {
+        if (delta <= 0) return;
+        this.credit += delta;
+    }
 }
