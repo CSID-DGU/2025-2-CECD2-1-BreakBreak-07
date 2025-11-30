@@ -11,5 +11,6 @@ public class MyPageResponseDto {
 
     private ChildDetailResponseDto child;
     private TaleSummaryResponseDto recentTale;
+    private ChildPreferBalanceResponseDto balance;
     private ReportSummaryDto reportSummary;
 }

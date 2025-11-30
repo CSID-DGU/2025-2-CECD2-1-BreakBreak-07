@@ -37,8 +37,9 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final ItemRepository itemRepository;
     private final ChildItemRepository childItemRepository;
+    private final TaleReviewRepository taleReviewRepository;
 
-    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository, JwtTokenProvider jwtTokenProvider, ItemRepository itemRepository, ChildItemRepository childItemRepository) {
+    public UserServiceImpl(UserRepository userRepository, LocalImageStorage localImageStorage, ChildRepository childRepository, TaleRepository taleRepository, JwtTokenProvider jwtTokenProvider, ItemRepository itemRepository, ChildItemRepository childItemRepository, TaleReviewRepository taleReviewRepository) {
         this.userRepository = userRepository;
         this.imageStorage = localImageStorage;
         this.childRepository = childRepository;
@@ -46,6 +47,7 @@ public class UserServiceImpl implements UserService {
         this.jwtTokenProvider = jwtTokenProvider;
         this.itemRepository = itemRepository;
         this.childItemRepository = childItemRepository;
+        this.taleReviewRepository = taleReviewRepository;
     }
 
     @Override
@@ -257,6 +259,48 @@ public class UserServiceImpl implements UserService {
                 .message("자녀가 삭제되었습니다.")
                 .build();
     }
+
+    public ChildPreferBalanceResponseDto getBalance(Long childId, String userId) {
+
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.ACCESS_DENIED));
+
+        List<Object[]> balances = taleReviewRepository.findAverageRatingBySubject(childId);
+
+        Double avgFriendship = 0.0;
+        Double avgFamily = 0.0;
+        Double avgGrowth = 0.0;
+        Double avgAdventure = 0.0;
+
+        for (Object[] result : balances) {
+            String subject = (String) result[0];       // 첫 번째 값: subject 이름
+            Double rating = ((Number) result[1]).doubleValue(); // 두 번째 값: 평균 rating
+
+            switch (subject) {
+                case "우정":
+                    avgFriendship = rating;
+                    break;
+                case "가족":
+                    avgFamily = rating;
+                    break;
+                case "성장":
+                    avgGrowth = rating;
+                    break;
+                case "모험":
+                    avgAdventure = rating;
+                    break;
+            }
+        }
+
+        return ChildPreferBalanceResponseDto.builder()
+                .avgFriendship(avgFriendship)
+                .avgFamily(avgFamily)
+                .avgGrowth(avgGrowth)
+                .avgAdventure(avgAdventure)
+                .build();
+
+    }
+
 
 
 }
