@@ -15,5 +15,6 @@ public class ChildResponseDto {
     private String preferTone;
     private String preferStyle;
     private String preferAge;
+    private Integer credit;
     private Integer taleCount;
 }
