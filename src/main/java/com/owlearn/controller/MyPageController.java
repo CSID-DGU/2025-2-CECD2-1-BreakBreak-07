@@ -27,6 +27,7 @@ public class MyPageController {
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         ChildDetailResponseDto child = userService.getChildDetail(childId, userId);
+        ChildPreferBalanceResponseDto childPreferBalanceResponseDto = userService.getBalance(childId, userId);
         TaleSummaryResponseDto recentTale = taleService.getRecentTaleByChildId(childId, userId);
         ReportSummaryDto reportSummary = taleReviewService.getReportSummaryByChildId(childId, userId);
 
@@ -34,6 +35,7 @@ public class MyPageController {
                 .child(child)
                 .recentTale(recentTale)
                 .reportSummary(reportSummary)
+                .balance(childPreferBalanceResponseDto)
                 .build();
 
         return new ResponseDto<>(myPage);

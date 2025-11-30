@@ -37,4 +37,6 @@ public interface UserService {
 
     // 여러 자녀 삭제
     NotifyResponseDto deleteChildren(DeleteChildrenRequestDto req, String userId);
+
+    ChildPreferBalanceResponseDto getBalance(Long childId, String userId);
 }
