@@ -102,7 +102,7 @@ public class Tale {
 
     /**
      * 이 동화를 참조로 하는 생성 동화
-     * 삭제 시 가팅 삭제
+     * 삭제 시 같이 삭제
      */
     @OneToMany(mappedBy = "originTale", cascade = CascadeType.REMOVE)
     private List<Tale> derivedTales;
