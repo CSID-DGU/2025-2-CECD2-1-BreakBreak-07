@@ -3,6 +3,7 @@
 package com.owlearn.service;
 
 import com.owlearn.dto.ChildWordDto;
+import com.owlearn.dto.response.ChildWordResponseDto;
 import com.owlearn.dto.response.NotifyResponseDto;
 import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.entity.Child;
@@ -65,17 +66,22 @@ public class ChildWordService {
      * 해당 자녀의 모든 단어장 목록 조회
      */
     @Transactional(readOnly = true)
-    public List<ChildWordDto> getChildWords(String userId, Long childId) {
+    public ChildWordResponseDto getChildWords(String userId, Long childId) {
         // 자녀 소유 검증
         Child child = childRepository.findByIdAndUser_UserId(childId, userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
 
-        return childWordRepository.findAllByChild_IdOrderByIdDesc(child.getId())
-                .stream()
-                .map(w -> ChildWordDto.builder()
-                        .word(w.getWord())
-                        .meaning(w.getMeaning())
-                        .build())
-                .collect(toList());
+        List<ChildWordDto> words = childWordRepository.findAllByChild_IdOrderByIdDesc(child.getId())
+                                                        .stream()
+                                                        .map(w -> ChildWordDto.builder()
+                                                                .word(w.getWord())
+                                                                .meaning(w.getMeaning())
+                                                                .build())
+                                                        .collect(toList());
+
+        return  ChildWordResponseDto.builder()
+                .words(words)
+                .count(words.size())
+                .build();
     }
 }

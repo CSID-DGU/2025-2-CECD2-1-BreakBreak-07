@@ -3,6 +3,7 @@
 package com.owlearn.controller;
 
 import com.owlearn.dto.ChildWordDto;
+import com.owlearn.dto.response.ChildWordResponseDto;
 import com.owlearn.dto.response.ResponseDto;
 import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.service.ChildWordService;
@@ -39,7 +40,7 @@ public class ChildWordController {
      * 해당 자녀의 모든 단어 조회
      */
     @GetMapping
-    public ResponseDto<List<ChildWordDto>> getWords(
+    public ResponseDto<ChildWordResponseDto> getWords(
             @PathVariable Long childId
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
