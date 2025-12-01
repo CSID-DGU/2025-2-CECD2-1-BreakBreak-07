@@ -2,9 +2,8 @@
 
 package com.owlearn.service;
 
-import com.owlearn.dto.request.ChildWordSaveRequestDto;
+import com.owlearn.dto.ChildWordDto;
 import com.owlearn.dto.response.NotifyResponseDto;
-import com.owlearn.dto.response.VocabDto;
 import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.entity.Child;
 import com.owlearn.entity.ChildWord;
@@ -32,17 +31,18 @@ public class ChildWordService {
      * 이미 있는 단어는 무시하고 새로 들어온 것만 추가.
      */
     @Transactional
-    public NotifyResponseDto saveUnknownWords(String userId, Long childId, ChildWordSaveRequestDto req) {
+    public NotifyResponseDto saveUnknownWords(String userId, Long childId, List<VocabResponseDto> req) {
 
         // 1) 자녀가 로그인 유저의 자녀인지 검증
         Child child = childRepository.findByIdAndUser_UserId(childId, userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
 
         // 2) 단어들 저장 (중복이면 스킵)
-        req.getWords().forEach(dto -> {
+        req.forEach(dto -> {
             String word = dto.getWord().trim().toLowerCase();
+            String meaning = dto.getMeaningKo().trim();
 
-            //if (word.isEmpty() || meaning.isEmpty()) return;
+            if (word.isEmpty() || meaning.isEmpty()) return;
 
             boolean exists = childWordRepository.existsByChild_IdAndWordIgnoreCase(child.getId(), word);
             if (exists) {
@@ -52,7 +52,7 @@ public class ChildWordService {
             ChildWord entity = ChildWord.builder()
                     .child(child)
                     .word(word)
-                    // .meaning(meaning)
+                    .meaning(meaning)
                     .build();
 
             childWordRepository.save(entity);
@@ -65,16 +65,16 @@ public class ChildWordService {
      * 해당 자녀의 모든 단어장 목록 조회
      */
     @Transactional(readOnly = true)
-    public List<VocabDto> getChildWords(String userId, Long childId) {
+    public List<ChildWordDto> getChildWords(String userId, Long childId) {
         // 자녀 소유 검증
         Child child = childRepository.findByIdAndUser_UserId(childId, userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
 
         return childWordRepository.findAllByChild_IdOrderByIdDesc(child.getId())
                 .stream()
-                .map(w -> VocabDto.builder()
+                .map(w -> ChildWordDto.builder()
                         .word(w.getWord())
-                        // .meaning(w.getMeaning())
+                        .meaning(w.getMeaning())
                         .build())
                 .collect(toList());
     }

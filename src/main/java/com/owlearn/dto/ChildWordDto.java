@@ -1,4 +1,4 @@
-package com.owlearn.dto.response;
+package com.owlearn.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VocabDto {
+public class ChildWordDto {
     private String word;
+    private String meaning;
 }

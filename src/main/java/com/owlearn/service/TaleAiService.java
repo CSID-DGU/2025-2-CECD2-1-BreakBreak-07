@@ -1,5 +1,6 @@
 package com.owlearn.service;
 
+import com.owlearn.dto.ChildWordDto;
 import com.owlearn.dto.request.*;
 import com.owlearn.dto.response.*;
 import com.owlearn.entity.Child;
@@ -54,19 +55,35 @@ public class TaleAiService {
         catch (IOException e) { throw new RuntimeException("이미지 저장 폴더 생성 실패: " + SAVE_DIR, e); }
     }
 
-    public TaleDetailResponseDto getTaleDetail(Long taleId) {
-        Tale tale = taleRepository.findById(taleId).orElseThrow();
+    // 단어 뜻 조회
+    public List<VocabResponseDto> getWordMeaning(List<String> req) {
+        if(req == null || req.isEmpty()) {
+            return Collections.emptyList();
+        }
 
-        List<String> contents = tale.getContents();
-        List<VocabResponseDto> vocabList = callVocabGenerate(contents);
+        try {
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("words", req);
 
-        return TaleDetailResponseDto.builder()
-                .title(tale.getTitle())
-                .contents(contents)
-                .imageUrls(tale.getImageUrls())
-                .type(tale.getType().name())
-                .createdAt(tale.getCreatedAt() != null ? tale.getCreatedAt().toString() : null)
-                .build();
+            HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(payload, jsonHeaders());
+
+            ResponseEntity<List<VocabResponseDto>> resp = restTemplate.exchange(
+                    URI.create(VOCAB_ENDPOINT),
+                    HttpMethod.POST,
+                    httpEntity,
+                    new ParameterizedTypeReference<List<VocabResponseDto>>() {}
+            );
+
+            List<VocabResponseDto> body = (resp != null) ? resp.getBody() : null;
+            if (body == null) {
+                // vocab 실패하면 빈 리스트로 반환
+                return Collections.emptyList();
+            }
+            return body;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     // =========================
@@ -235,32 +252,6 @@ public class TaleAiService {
             throw new IllegalStateException("FastAPI 텍스트 생성 실패 또는 비정상 응답");
         }
         return body;
-    }
-
-    private List<VocabResponseDto> callVocabGenerate(List<String> contents) {
-        try {
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("contents", contents);
-
-            HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(payload, jsonHeaders());
-
-            ResponseEntity<List<VocabResponseDto>> resp = restTemplate.exchange(
-                    URI.create(VOCAB_ENDPOINT),
-                    HttpMethod.POST,
-                    httpEntity,
-                    new ParameterizedTypeReference<List<VocabResponseDto>>() {}
-            );
-
-            List<VocabResponseDto> body = (resp != null) ? resp.getBody() : null;
-            if (body == null) {
-                // vocab 실패하면 빈 리스트로 반환
-                return Collections.emptyList();
-            }
-            return body;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
     }
 
     /** 원격 URL들 다운로드 → 로컬 저장 → 공개 URL 목록 반환 */
