@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ChildWordSaveRequestDto {
 
-    @NotEmpty
-    private List<VocabDto> words;   // 프론트에서 체크 후 보낸 단어들
+    private List<String> words;   // 프론트에서 체크 후 보낸 단어들
 
 }

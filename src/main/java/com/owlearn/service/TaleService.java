@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface TaleService {
 
+    // 동화 조회
+    TaleDetailResponseDto getTaleDetail(Long taleId);
+
     // 동화를 삽입하고, 삽입한 동화의 ID를 반환
     Long insertTale(TaleDto request);
 

@@ -41,9 +41,8 @@ public class ChildWordService {
         // 2) 단어들 저장 (중복이면 스킵)
         req.getWords().forEach(dto -> {
             String word = dto.getWord().trim().toLowerCase();
-            String meaning = dto.getMeaning().trim();
 
-            if (word.isEmpty() || meaning.isEmpty()) return;
+            //if (word.isEmpty() || meaning.isEmpty()) return;
 
             boolean exists = childWordRepository.existsByChild_IdAndWordIgnoreCase(child.getId(), word);
             if (exists) {
@@ -53,7 +52,7 @@ public class ChildWordService {
             ChildWord entity = ChildWord.builder()
                     .child(child)
                     .word(word)
-                    .meaning(meaning)
+                    // .meaning(meaning)
                     .build();
 
             childWordRepository.save(entity);
@@ -75,7 +74,7 @@ public class ChildWordService {
                 .stream()
                 .map(w -> VocabDto.builder()
                         .word(w.getWord())
-                        .meaning(w.getMeaning())
+                        // .meaning(w.getMeaning())
                         .build())
                 .collect(toList());
     }

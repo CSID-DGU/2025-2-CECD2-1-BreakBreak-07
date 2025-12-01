@@ -39,6 +39,21 @@ public class TaleServiceImpl implements TaleService {
     private final TaleReviewRepository taleReviewRepository;
 
     @Override
+    public TaleDetailResponseDto getTaleDetail(Long taleId) {
+        Tale tale = taleRepository.findById(taleId).orElseThrow();
+
+        List<String> contents = tale.getContents();
+
+        return TaleDetailResponseDto.builder()
+                .title(tale.getTitle())
+                .contents(contents)
+                .imageUrls(tale.getImageUrls())
+                .type(tale.getType().name())
+                .createdAt(tale.getCreatedAt() != null ? tale.getCreatedAt().toString() : null)
+                .build();
+    }
+
+    @Override
     public Long insertTale(TaleDto request) {
         Tale tale = Tale.builder()
                 .title(request.getTitle())

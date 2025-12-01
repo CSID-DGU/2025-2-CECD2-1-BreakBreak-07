@@ -9,6 +9,7 @@ import com.owlearn.dto.response.VocabDto;
 import com.owlearn.dto.response.VocabResponseDto;
 import com.owlearn.service.ChildWordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,15 +23,14 @@ public class ChildWordController {
     private final ChildWordService childWordService;
 
     /**
-     * 단어 저장 (사용자가 모르는 단어로 체크한 리스트 저장)
+     * 단어 뜻 요청 & 저장
      */
     @PostMapping
     public ResponseDto<NotifyResponseDto> saveWords(
-            Principal principal,
             @PathVariable Long childId,
             @RequestBody ChildWordSaveRequestDto req
     ) {
-        String userId = principal.getName(); // JWT 기반 로그인이라면 이런 식으로 userId 꺼내겠지
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(childWordService.saveUnknownWords(userId, childId, req));
     }
 
@@ -39,10 +39,9 @@ public class ChildWordController {
      */
     @GetMapping
     public ResponseDto<List<VocabDto>> getWords(
-            Principal principal,
             @PathVariable Long childId
     ) {
-        String userId = principal.getName();
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(childWordService.getChildWords(userId, childId));
 
     }

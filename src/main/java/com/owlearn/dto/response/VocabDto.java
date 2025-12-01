@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VocabDto {
-    private String word;        // 영단어(shiny)
-    private String meaning;   // 한국어 뜻 (빛을 반사해서 반짝이는, 윤이 나는)
+    private String word;
 }

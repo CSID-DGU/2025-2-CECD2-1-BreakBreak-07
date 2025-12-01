@@ -65,7 +65,6 @@ public class TaleAiService {
                 .contents(contents)
                 .imageUrls(tale.getImageUrls())
                 .type(tale.getType().name())
-                .words(vocabList)
                 .createdAt(tale.getCreatedAt() != null ? tale.getCreatedAt().toString() : null)
                 .build();
     }

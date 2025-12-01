@@ -61,7 +61,7 @@ public class TaleController {
      */
     @GetMapping("/{taleId}")
     public ResponseDto<TaleDetailResponseDto> getTale(@PathVariable Long taleId) {
-        return new ResponseDto<>(taleAiService.getTaleDetail(taleId));
+        return new ResponseDto<>(taleService.getTaleDetail(taleId));
     }
 
     /**
