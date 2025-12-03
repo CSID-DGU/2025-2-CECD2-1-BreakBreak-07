@@ -59,6 +59,8 @@ public class Child {
 
     public void addCredit(int delta) {
         if (delta <= 0) return;
+        if (this.credit == null) this.credit = 0;
         this.credit += delta;
     }
+
 }

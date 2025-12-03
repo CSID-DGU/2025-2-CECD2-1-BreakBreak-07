@@ -188,6 +188,7 @@ public class TaleAiService {
                 .build();
     }
 
+    // 리텔링
     @Transactional
     public RetellEvalResponseDto evaluateRetelling(String userId, Long taleId, TaleRetellRequestDto req) {
 
@@ -222,7 +223,7 @@ public class TaleAiService {
             childRepository.save(child);
         }
 
-        // 5) 프론트로는 피드백만 응답 (요구사항대로)
+        // 5) 피드백 응답
         return eval;
     }
 
