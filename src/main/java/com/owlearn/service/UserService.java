@@ -39,4 +39,6 @@ public interface UserService {
     NotifyResponseDto deleteChildren(DeleteChildrenRequestDto req, String userId);
 
     ChildPreferBalanceResponseDto getBalance(Long childId, String userId);
+
+    ChildIdResponseDto updateChild(String userId, Long childId, AddChildRequestDto addChildRequestDto);
 }

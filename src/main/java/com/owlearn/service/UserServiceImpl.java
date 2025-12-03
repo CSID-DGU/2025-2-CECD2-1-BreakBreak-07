@@ -301,6 +301,16 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional
+    @Override
+    public ChildIdResponseDto updateChild(String userId, Long childId, AddChildRequestDto addChildRequestDto) {
+        Child child = childRepository.findByIdAndUser_UserId(childId, userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.CHILD_NOT_FOUND));
+        child.setName(addChildRequestDto.getChildName());
+        child.setAge(addChildRequestDto.getAge());
+
+        return new ChildIdResponseDto(child.getId());
+    }
 
 
 }

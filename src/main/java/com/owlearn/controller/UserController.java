@@ -119,4 +119,13 @@ public class UserController {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return new ResponseDto<>(userService.deleteChildren(deleteChildrenRequestDto, userId));
     }
+
+    @PutMapping("/child/{childId}")
+    public ResponseDto<ChildIdResponseDto> updateChild(
+            @PathVariable Long childId,
+            @RequestBody AddChildRequestDto AddChildRequestDto
+    ) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseDto<>(userService.updateChild(userId, childId, AddChildRequestDto));
+    }
 }
