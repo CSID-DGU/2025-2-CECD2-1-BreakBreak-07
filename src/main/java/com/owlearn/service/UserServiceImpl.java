@@ -239,12 +239,14 @@ public class UserServiceImpl implements UserService {
         ChildItem childItem = ChildItem.builder()
                 .child(child)
                 .item(item)
+                .owned(true)
                 .build();
 
         childItemRepository.save(childItem);
 
         return new NotifyResponseDto("아이템 구매 완료!");
     }
+
     public NotifyResponseDto deleteChildren(DeleteChildrenRequestDto req, String userId) {
 
         List<Child> children = childRepository.findAllByIdInAndUser_UserId(req.getChildIds(), userId);
