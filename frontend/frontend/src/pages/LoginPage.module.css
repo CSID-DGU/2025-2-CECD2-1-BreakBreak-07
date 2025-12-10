@@ -1,0 +1,157 @@
+.loginPage {
+  min-height: 80vh;
+  padding: 40px 16px 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "HakgyoansimGeurimilgi", sans-serif;
+}
+
+.loginContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loginTitle {
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.loginBox {
+  background-color: rgba(255, 255, 255, 0.96);
+  padding: 40px 32px;
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+}
+
+.loginInput {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+  background-color: #fff9ed;
+}
+
+.loginButton {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent, #7fbb98);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  transition: background 0.16s ease, transform 0.12s ease, box-shadow 0.16s ease;
+}
+
+.loginButton:hover {
+  background: color-mix(in srgb, var(--accent, #7fbb98) 88%, #2f3a24 12%);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.or {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: #bbb;
+  border: none;
+}
+
+.orText {
+  font-size: 14px;
+  color: #555;
+  white-space: nowrap;
+}
+
+.socialButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 20px;
+}
+
+.socialButton {
+  width: 30%;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.socialButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.socialIcon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.signup {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signup a {
+  color: #3366ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+}
+
+.adminLink {
+  text-align: center;
+}
+
+.adminButton {
+  background: linear-gradient(135deg, #7bd0ff, #8ef0c6);
+  color: #163a46;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  margin-top: 15px;
+}
+
+.adminButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+}

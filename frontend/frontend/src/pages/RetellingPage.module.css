@@ -1,0 +1,321 @@
+.page {
+  width: 100%;
+  max-width: 1040px;
+  margin: 40px auto 32px;
+  padding: 0 24px 32px;
+  box-sizing: border-box;
+  /* 프레임 안에 고정되도록 스크롤은 상위에서만 */
+  min-height: auto;
+  height: auto;
+  overflow: hidden;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    sans-serif;
+  color: #203124;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: #203124;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #4f6446;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.contentRow {
+  display: flex;
+  gap: 20px;
+  align-items: stretch; /* 양쪽 카드 높이를 맞춤 */
+}
+
+.sceneCard {
+  background: #f7f9f5;
+  border-radius: 20px;
+  padding: 16px 18px;
+  border: 1.5px solid #d4dfc6;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sceneTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #35513d;
+  margin: 0 0 6px;
+}
+
+.sceneHint {
+  font-size: 13px;
+  color: #6b7a63;
+  margin: 0 0 10px;
+}
+
+.sceneImageBox {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.sceneImage {
+  width: 100%;
+  max-width: 380px;
+  max-height: 220px;
+  border-radius: 18px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
+  object-fit: contain;
+}
+
+.sceneText {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.formCard {
+  background: #fffdf8;
+  border-radius: 20px;
+  padding: 18px 18px 18px;
+  border: 2px solid #d4dfc6;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #35513d;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 12px;
+  border: 1.5px solid #cfe0cf;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #658864;
+  box-shadow: 0 0 0 3px rgba(101, 136, 100, 0.18);
+}
+
+.helper {
+  font-size: 13px;
+  color: #6b7a63;
+  margin: 4px 0 0;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ghostButton,
+.primaryButton {
+  border-radius: 999px;
+  padding: 9px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.ghostButton {
+  border: 1.5px solid #658864;
+  background: #ffffff;
+  color: #658864;
+}
+
+.ghostButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  background: color-mix(in srgb, #ffffff 88%, #658864 12%);
+}
+
+.primaryButton {
+  border: none;
+  background: linear-gradient(135deg, #8fc28f, #658864);
+  color: #ffffff;
+  box-shadow: 0 10px 18px rgba(101, 136, 100, 0.24);
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(101, 136, 100, 0.28);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .page {
+    margin: 28px auto 24px;
+    padding: 0 16px 24px;
+  }
+
+  .formCard {
+    padding: 18px 16px 18px;
+  }
+
+  .buttonRow {
+    flex-direction: column-reverse;
+  }
+
+  .ghostButton,
+  .primaryButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ===== 팝업 ===== */
+.popupOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.popupCard {
+  width: 360px;
+  background: #ffffff;
+  padding: 26px 24px 22px;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  position: relative;
+  text-align: center;
+}
+
+.popupTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.popupCredit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #305f32;
+  margin-bottom: 10px;
+}
+
+.popupCreditIcon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.popupCreditValue {
+  font-size: 18px;
+}
+
+.popupFeedback {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.45;
+  white-space: pre-line;
+  margin-bottom: 18px;
+}
+
+.popupActions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.popupPrimary,
+.popupSecondary {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.popupPrimary {
+  background: #8fb68f;
+  color: #ffffff;
+}
+
+.popupSecondary {
+  background: #f5f7f2;
+  color: #445137;
+}
+
+/* 중앙 크레딧 표시 */
+.creditCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 6px 0 12px;
+}
+
+.creditIcon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.creditValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: #5a6b4f;
+}
+
+/* 문단 가독성 향상 */
+.feedbackText {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.55;
+  margin: 0 4px 18px;
+  text-align: left;
+  white-space: normal;
+}
+
+/* 크레딧 설명 박스 */
+.creditExplainBox {
+  background: #f3f7ed;
+  border-left: 4px solid #8fb68f;
+  padding: 10px 14px;
+  margin: 10px 0 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #4b6045;
+  text-align: left;
+}

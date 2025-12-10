@@ -1,0 +1,103 @@
+.container {
+  width: 80%;
+  margin: 5% auto;
+  border-radius: 15px;
+  font-family: "HakgyoansimGeurimilgi", sans-serif;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  overflow: hidden; /* radius가 탭을 넘지 않게 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: #e0d285;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px;
+  background-color: #e0d285;
+  text-align: center;
+  font-size: 24px;
+  cursor: pointer;
+  border: none;
+}
+
+/* 선택된 탭 */
+.active {
+  background-color: #ffffff;
+  color: #658864;
+  font-weight: bold;
+  border-radius: 20px;
+}
+
+.quizBox {
+  height: 50vh;
+  max-height: 400px; /* 고정 높이 */
+  overflow-y: auto; /* 넘치면 스크롤 */
+  background: white;
+  padding: 20px 30px 5px 30px;
+  border-radius: 15px;
+  background: #fdfdfd;
+  box-shadow: 1px 2px 20px 1px rgba(0, 0, 0, 0.25);
+  margin-bottom: 20px;
+}
+
+.questionText {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* 옵션 영역 */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.optionLabel {
+  display: flex;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: border 0.3s;
+}
+
+.optionLabel:hover {
+  border-color: #658864;
+}
+
+.optionLabel input[type="radio"] {
+  margin-right: 15px;
+  accent-color: #658864;
+}
+
+/* 제출 버튼 */
+.submitButton {
+  border-radius: 40px;
+  background: linear-gradient(135deg, #a98f7b, #786e65); /* 은은한 그라데이션 */
+  margin-top: 20px;
+  padding: 10px 24px;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 더 큰 그림자 */
+  border: none;
+  width: 130px;
+  height: 55px;
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  margin: auto;
+}
+
+.submitButton:hover {
+  background: linear-gradient(135deg, #7e6655, #5b5047); /* hover 시 어둡게 */
+  transform: translateY(-4px); /* 살짝 튀어오르는 효과 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}

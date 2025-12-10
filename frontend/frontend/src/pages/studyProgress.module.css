@@ -1,0 +1,55 @@
+@font-face {
+  font-family: "HakgyoansimGeurimilgi";
+  src: url("../assets/fonts/HakgyoansimGeurimilgi.ttf") format("truetype");
+}
+
+/* 🔥 페이지 전체가 항상 스크롤 가능하게 */
+.page {
+  width: 100%;
+  min-height: 100vh; /* 화면 높이 이상이면 아래로 계속 늘어남 */
+  box-sizing: border-box;
+  padding: 8px 10px 18px;
+  font-family: "Pretendard", "HakgyoansimGeurimilgi", "Noto Sans KR", sans-serif;
+  display: block; /* flex 제거해서 높이 제한 안 받게 */
+  overflow-y: auto; /* 🔥 페이지 단위 스크롤 강제 */
+}
+
+/* 로딩/에러용 공통 메시지 */
+.stateMessage {
+  width: 100%;
+  max-width: 900px;
+  margin: 80px auto;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #555;
+}
+
+.stateMessage.error {
+  color: #c0392b;
+}
+
+/* FINISH 버튼 */
+.quizBtn {
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8fc28f, #658864);
+  box-shadow: 0 8px 16px rgba(101, 136, 100, 0.22);
+  cursor: pointer;
+  border: none;
+  min-width: 140px;
+  height: 46px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  transition: all 0.18s ease-in-out;
+  margin: 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quizBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(101, 136, 100, 0.28);
+}

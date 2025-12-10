@@ -1,0 +1,157 @@
+/* ----------------------------------------
+   0. 페이지 전체 래퍼 (스크롤 담당)
+   ---------------------------------------- */
+.pageWrapper {
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding-top: 0px;
+  padding-bottom: 60px; /* ← 확실한 아래 여백 */
+  display: block; /* ← 여백이 사라지던 원인 해결 */
+  box-sizing: border-box;
+}
+
+/* ----------------------------------------
+   1. 메인 컨테이너
+   ---------------------------------------- */
+.container {
+  width: 100%;
+  max-width: 1040px;
+  padding: 0 24px 60px; /* 상단은 pageWrapper가 책임짐 */
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    sans-serif;
+  box-sizing: border-box;
+}
+
+/* ----------------------------------------
+   2. 타이틀 (가운데 정렬)
+   ---------------------------------------- */
+.title {
+  width: 100%;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #1f2937;
+  text-align: center; /* ← 가운데 정렬 */
+}
+
+/* ----------------------------------------
+   3. 리스트
+   ---------------------------------------- */
+.list {
+  width: 100%;
+  max-width: 680px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ----------------------------------------
+   4. 아이템 카드
+   ---------------------------------------- */
+.item {
+  background-color: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+  margin-bottom: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  transition: transform 0.15s ease;
+}
+
+.item:hover {
+  transform: translateY(-2px);
+}
+
+/* ----------------------------------------
+   5. 텍스트 그룹
+   ---------------------------------------- */
+.textGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f3f6fb;
+  color: #2f3945;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.idText {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ----------------------------------------
+   6. 버튼 그룹
+   ---------------------------------------- */
+.buttonGroup {
+  display: flex;
+  align-items: center;
+}
+
+/* 버튼 공통 */
+.viewBtn,
+.detailBtn,
+.deleteBtn {
+  background-color: #f6f7f9 !important;
+  background-image: none !important;
+  color: #1f2937;
+
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+
+  padding: 10px 16px;
+  margin-left: 8px;
+
+  font-size: 14px;
+  cursor: pointer;
+
+  box-shadow: none;
+  transition: background-color 0.15s ease, transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.buttonGroup button:first-child {
+  margin-left: 0;
+}
+
+.viewBtn:hover,
+.detailBtn:hover {
+  background-color: #eef1f4;
+  border-color: #d4d9df;
+  transform: translateY(-1px);
+}
+
+/* 삭제 버튼만 별도 스타일 */
+.deleteBtn {
+  background-color: #fef6f4 !important;
+  color: #b91c1c;
+}
+
+.deleteBtn:hover {
+  background-color: #fbe3e0;
+  border-color: #eed3d0;
+  transform: translateY(-1px);
+}

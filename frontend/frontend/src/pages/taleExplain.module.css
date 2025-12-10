@@ -1,0 +1,204 @@
+.explainWrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+.explainTitle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.explainTitle h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #4b5f3c;
+}
+
+.explainTitle p {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #8f8f8f;
+}
+
+.explainCard {
+  background: #ffffff;
+  border: 2px solid #e7e4c8;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.storyTitleBox {
+  position: relative; 
+  text-align: center;
+  margin: 4px 0 0;
+  background: #f4f9f2;
+  border: 2px solid #dce9d2;
+  border-radius: 12px;
+  padding: 10px 16px;
+}
+
+.storyTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a5c3c;
+}
+
+.storyBadge {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #dff3d7;
+  color: #4b5f3c;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.explainFlex {
+  display: flex;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  /*justify-content: center;*/
+  margin-top: 18px;
+  margin-bottom: 6px;
+}
+
+.optionItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #f4f9f2;
+  border: 2px solid #cccccc;
+  padding: 16px 14px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #4a5c3c;
+}
+
+.optionLabel {
+  color: #4a5c3c;
+}
+
+.optionSep {
+  margin: 0 6px;
+  color: #8aa57b;
+}
+
+.optionValue {
+  font-weight: 500;
+  color: #3e4c35;
+}
+
+
+.explainBox {
+  flex: 1;
+  background: #fff;
+  border: 2px solid #dcf1e4;
+  border-radius: 16px;
+  padding: 10px 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.explainBox h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #355b40;
+}
+
+.explainBox ul li {
+  margin-bottom: 3px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.optionSummary,
+.reason-box {
+  margin-top: 28px;
+}
+
+.optionSummary h3,
+.reasonBox h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #4b5f3c;
+}
+
+.optionSummary ul,
+.reasonBox ul {
+  background: #f9faf7;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.optionSummary li,
+.reasonBox li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #555;
+}
+
+.reasonList {
+    list-style: none;   /* ← 점 제거 */
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-top: 20px;
+}
+
+.reasonItem {
+  border-left: 4px solid #b5d9a1;
+  padding: 6px 14px;
+  background: #f8fbf5;
+  border-radius: 8px;
+  color: #3c4d33;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+
+.explainButton {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px 0;
+  /*background: linear-gradient(135deg, #ffb36c, #ffa04c);*/
+  background: #A3D9C9;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  color: #4b5f3c;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(127, 168, 153, 1.0);
+  transition: 0.2s ease;
+}
+
+.explainButton:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+/* 화면 좁아지면 세로로 */
+@media (max-width: 900px) {
+  .explainFlex {
+    flex-direction: column;
+  }
+}

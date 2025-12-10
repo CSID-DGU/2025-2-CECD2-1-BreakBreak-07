@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "RubikBubbles";
+  src: url("../assets/fonts/RubikBubbles-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HakgyoansimGeurimilgi";
+  src: url("../assets/fonts/HakgyoansimGeurimilgi.ttf") format("truetype");
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 3%;
+  height: 6vh; /* 화면 높이의 6% */
+  gap: 50%;
+}
+
+.logo {
+  font-family: "RubikBubbles";
+  font-size: 48px;
+  color: #658864;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff,
+    2px 2px 0 #fff, 4px 4px 6px rgba(0, 0, 0, 0.2);
+}
+/* .logo:hover {
+  font-weight: bold;
+} */
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* 버튼 사이 간격 */
+}
+
+.rightbtn {
+  font-family: "HakgyoansimGeurimilgi";
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.rightbtn:hover {
+  font-weight: bold;
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 180px; 
+  justify-content: flex-end; 
+}

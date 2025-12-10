@@ -1,0 +1,447 @@
+.page {
+  width: 100%;
+  max-width: 1040px;
+  margin: 28px auto 20px;
+  padding: 0 24px 40px;
+  box-sizing: border-box;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    sans-serif;
+  color: #2f3a24;
+  min-height: 100%;
+  height: 100%;
+  overflow-y: auto; /* 부모 상세 페이지도 프레임 안에서만 스크롤 */
+}
+
+.backButton {
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  font-family: "HakgyoansimGeurimilgi", "Noto Sans KR", sans-serif;
+}
+
+.headerBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border-radius: 20px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, #eef4e6 0%, #f9fbf6 100%);
+  color: #2f3a24;
+  border: 2px solid #d4dfc6;
+}
+
+.bookImg {
+  width: 96px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.childInfo h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.reportOverview {
+  margin-top: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reportCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f5f8f2;
+  border: 1.5px solid #8fb68f;
+  border-radius: 12px;
+  padding: 6px 12px;
+  width: fit-content;
+}
+
+.reportCount:hover {
+  background: #eef3ee;
+}
+
+.reportLabel {
+  font-size: 14px;
+  color: #6b7562;
+  font-weight: 600;
+}
+
+.reportValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #3f4f37;
+}
+
+.reportBooks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bookChip {
+  background: rgba(148, 161, 132, 0.18);
+  color: #4a5a3d;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(90, 100, 80, 0.08);
+}
+
+.reportEmpty {
+  color: #7a7a7a;
+  font-size: 14px;
+}
+
+.recommendation,
+.leftBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.recMedia {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 8px 18px rgba(90, 100, 80, 0.16);
+}
+
+.recMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recBody {
+  flex: 1;
+  min-width: 220px;
+}
+
+.recTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.recReason {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.tag {
+  background: #eef2e6;
+  color: #4a634e;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+.recButtons button {
+  margin: 4px;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  background: #b5cda3;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.recButtons button:hover {
+  background: #7ca982;
+}
+
+.topicNote {
+  font-size: 13px;
+  color: #7a7a7a;
+  /*margin-bottom: 20px;
+  margin-top: 0;*/
+  margin: 0;
+  gap: 10px;
+
+  padding: 6px 12px;
+  background: #f1f4ea;
+  border-radius: 12px;
+  border: 1px solid #d4dfc6;
+  color: #3f572d;
+}
+
+.learningSection {
+  display: flex;
+  width: 100%;
+  align-items: stretch; /* 핵심 */
+  gap: 16px;
+  margin-top: 1px;
+}
+
+.leftBox,
+.rightBox {
+  flex: 1;
+  background: white;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  border: 1.5px solid #d4dfc6;
+  border-radius: 20px;
+}
+
+.leftBox {
+  flex-grow: 1;
+}
+
+.balanceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  gap: 28px;
+  margin-bottom: 1px;
+  width: max-content;
+  padding: 0;
+}
+
+.rightBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 16px;
+}
+
+.wordList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.wordChip {
+  background: #f4f7f3;
+  border: 1px solid #d9e2d1;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 16px;
+  color: #485f3f;
+  font-weight: bold;
+  cursor: default;
+}
+
+.wordEmpty {
+  font-size: 13px;
+  color: #7a7a7a;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+/* 반응형 (태블릿 이하에서 세로로) */
+@media (max-width: 900px) {
+  .learningSection {
+    flex-direction: column;
+  }
+}
+
+.topicBars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.topicRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topicLabel {
+  width: 80px;
+  font-size: 14px;
+}
+
+.topicBarWrap {
+  flex: 1;
+  height: 10px;
+  background: #e6e6e6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.topicBar {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.topicValue {
+  font-size: 13px;
+  color: #555;
+  min-width: 40px;
+  text-align: right;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 35, 20, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  z-index: 999;
+}
+
+.modalPanel {
+  background: #ffffff;
+  width: min(900px, 70vw);
+  max-height: 85vh;
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(28, 39, 19, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeUp 0.25s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 32px;
+  border-bottom: 1px solid #e5ead8;
+}
+
+.modalHeader h2 {
+  font-size: 24px;
+  color: #23301c;
+  margin: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #58634b;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.closeBtn:hover {
+  color: #3a4530;
+}
+
+.modalBody {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.reportList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reportItem {
+  border-radius: 20px;
+  background: #f6f9ee;
+  border: 1px solid #e0e8d5;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.15s ease;
+}
+.reportItem:hover {
+  transform: translateY(-2px);
+}
+
+.reportItemTitle {
+  font-size: 20px;
+  color: #27311e;
+  font-weight: 700;
+}
+
+.reportSummary {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #445137;
+  margin: 0;
+}
+
+.reportDate {
+  font-size: 14px;
+  color: #7b866d;
+}
+
+/*.preferenceChartContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}*/
+.chartWrapper {
+  flex-grow: 1;
+  width: 180px;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.rightBox > div {
+  flex-grow: 1;
+}
+
+.preferenceChartContainer canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.preferenceChartEmpty {
+  text-align: center;
+  margin-top: 8px;
+  color: #999;
+  font-size: 14px;
+}

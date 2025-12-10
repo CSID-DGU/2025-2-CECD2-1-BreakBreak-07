@@ -1,0 +1,115 @@
+/* ----------------------------------------
+   PAGE WRAPPER (스크롤 담당)
+---------------------------------------- */
+.pageWrapper {
+  overflow-y: auto;
+  padding-top: 0;
+  padding-bottom: 60px; /* 바닥 여백 */
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ----------------------------------------
+   메인 container
+---------------------------------------- */
+.container {
+  width: 100%;
+  max-width: 1040px;
+  padding: 0 24px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    sans-serif;
+}
+
+/* 제목 */
+.title {
+  width: 100%;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  margin-top: 40px;
+}
+
+/* ----------------------------------------
+   Section Wrapper
+---------------------------------------- */
+.sectionWrapper {
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* Section Box */
+.section {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 14px 0 8px;
+}
+
+/* Inputs */
+.input,
+.pageTextarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.pageTextarea {
+  height: 100px;
+  resize: vertical;
+}
+
+/* Upload Button */
+.uploadButton {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  background-color: #f5f7f1;
+  border: 1px solid #d8dfd1;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #3f4f36;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.uploadButton:hover {
+  background-color: #e8eddf;
+  transform: translateY(-1px);
+}
+
+/* 안내 메시지 */
+.message {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: #4b5a36;
+  text-align: right;
+}

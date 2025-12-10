@@ -1,0 +1,99 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  gap: 12px;
+  color: #3b3b3b;
+  font-weight: 700;
+}
+
+.overlayLight {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.loader {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 6px solid #e6e6e6;
+  border-top-color: #4f653a;
+  animation: spin 0.9s linear infinite;
+}
+
+.text {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.sub {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+.wordNotice {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.wordCard {
+  background: linear-gradient(135deg, #e9f7ef, #d6f0e0);
+  border: 1px solid #c3e3d0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  text-align: center;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  min-width: 240px;
+  position: relative;
+  animation: floatWord 4s ease-in-out infinite alternate,
+    glowWord 6s ease-in-out infinite;
+  margin-top: 6px;
+}
+
+.wordTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1f4a3a;
+  letter-spacing: 0.7px;
+}
+
+.wordMeaning {
+  font-size: 0.95rem;
+  color: #2f5c46;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes floatWord {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glowWord {
+  0% {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08), 0 0 0 rgba(126, 210, 149, 0);
+  }
+  50% {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08),
+      0 0 14px rgba(126, 210, 149, 0.4);
+  }
+  100% {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08), 0 0 0 rgba(126, 210, 149, 0);
+  }
+}

@@ -1,0 +1,84 @@
+:root {
+  --bg-base: #f7fbf7;
+  --text-main: #1f2e1f;
+  --text-muted: #5a6a5a;
+  --accent-1: #64c17d; /* 기본 그린 */
+  --accent-2: #4f9f67; /* 진한 그린 */
+  --accent-3: #7bcf9a; /* 밝은 그린 */
+  --accent-4: #f4c384; /* 포근한 피치 */
+  --radius-lg: 22px;
+  --shadow-soft: 0 18px 45px rgba(72, 125, 90, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Baloo 2", "Fredoka", "Jua", "Segoe UI", system-ui, -apple-system,
+    "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, var(--bg-base) 0%, #fdf4ec 100%);
+  color: var(--text-main);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent-1);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  border-radius: 14px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #baf2d5, #ffd89b);
+  color: #1f2e1f;
+  font-weight: 700;
+  box-shadow: none;
+  cursor: pointer;
+  transition: opacity 0.12s ease;
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 12px 14px;
+  background: #ffffff;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 4px rgba(100, 193, 125, 0.18);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

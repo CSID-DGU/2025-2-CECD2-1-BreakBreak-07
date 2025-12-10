@@ -1,0 +1,226 @@
+/* 페이지 전체 래퍼 */
+.page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 60px auto 30px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+/* 가운데 정렬된 내용 박스 */
+.contentBox {
+  margin-top: 10px;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 작은 타이틀 */
+.pageHeader {
+  margin-bottom: 18px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: #2d3b2a;
+  margin-bottom: 6px;
+}
+
+.pageSubtitle {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.pageSubtitle span {
+  font-weight: 700;
+  color: #4a3c28;
+}
+
+/* 단어 카드 박스 */
+.wordContainer {
+  background: #f7f9f5;
+  padding: 32px 32px 30px;
+  border-radius: 26px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 헤더 */
+.wordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wordTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3b2a;
+}
+
+.wordCount {
+  background: #e7f0dd;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #3f572d;
+}
+
+.noWordBox {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: #f1f6ea;
+  text-align: center;
+}
+
+.noWordTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2d3b2a;
+  margin-bottom: 6px;
+}
+
+.noWordDesc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* 단어 태그 영역 */
+.wordTags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 22px 0 18px;
+}
+
+/* 태그 버튼 */
+.tag {
+  background: #f1f6ea;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #d4dfc6;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3f572d;
+  cursor: pointer;
+  transition: 0.16s ease;
+}
+
+.tag:hover {
+  background: #e5f0d8;
+}
+
+/* 선택된 태그 */
+.activeTag {
+  background: linear-gradient(120deg, #8fc28f, #658864);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 14px rgba(101, 136, 100, 0.25);
+  transform: translateY(-1px);
+}
+
+/* 상세 설명 */
+.wordDetails {
+  margin-top: 8px;
+}
+
+.wordName {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #2f3d2a;
+}
+
+.wordPos {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #b07f3a;
+}
+
+.wordMeaning,
+.wordKor,
+.wordExample {
+  font-size: 17px;
+  line-height: 1.55;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.wordLabel {
+  font-weight: 700;
+  color: #4a3c28;
+}
+
+/* 버튼 영역 */
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+/* 공통 버튼 스타일 */
+.actionButtons button {
+  min-width: 120px;
+  padding: 11px 26px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+/* 브라운 버튼 두 개 */
+.brownBtn {
+  background: linear-gradient(135deg, #b39c86, #8e7c6a);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.brownBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+/* 검정 버튼 (학습 종료) */
+.blackBtn {
+  background: #333;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.blackBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .page {
+    padding: 0 14px;
+  }
+
+  .wordContainer {
+    padding: 24px 20px;
+  }
+
+  .actionButtons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .actionButtons button {
+    width: 100%;
+    max-width: 260px;
+    justify-content: center;
+  }
+}

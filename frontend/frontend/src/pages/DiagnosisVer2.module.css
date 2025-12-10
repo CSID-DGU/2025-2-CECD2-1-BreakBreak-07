@@ -1,0 +1,336 @@
+@font-face {
+  font-family: "HakgyoansimGeurimilgi";
+  src: url("../assets/fonts/HakgyoansimGeurimilgi.ttf") format("truetype");
+}
+
+/* --------------------
+   🔷 공통 레이아웃
+-------------------- */
+.diagnosisPage {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    sans-serif;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 6px 12px 14px;
+  gap: 10px;
+}
+
+.title {
+  font-size: clamp(1.8rem, 2.7vw, 2.5rem);
+  font-weight: bold;
+  color: #2a1a33;
+  margin: 12px 0 10px;
+  text-align: center;
+}
+
+/* --------------------
+   🔷 메인 컨테이너 정렬
+-------------------- */
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  max-width: 1040px;
+}
+
+/* --------------------
+   🔷 아바타 영역
+-------------------- */
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: clamp(240px, 32vw, 300px);
+  height: 55vh;
+
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+
+  padding: 12px 12px 48px;
+  position: relative;
+}
+
+.avatarLayerWrap {
+  position: relative;
+  width: 300px;
+  height: 190px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImg,
+.avatarLayer {
+  width: 100%;
+  object-fit: contain;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.avatarImg {
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.avatarLayer {
+  z-index: 2;
+}
+
+/* --------------------
+   🔷 완료 버튼 (saveButton)
+-------------------- */
+.doneChip {
+  position: absolute;
+  top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: #7e9c7dff;
+  color: #ffffff;
+  font-weight: 600;
+
+  padding: 10px 28px;
+  border-radius: 18px;
+
+  border: none;
+  cursor: pointer;
+
+  font-size: 18px;
+  letter-spacing: -0.3px;
+
+  box-shadow: 0 4px 14px rgba(80, 120, 70, 0.25);
+  transition: all 0.18s ease;
+}
+.doneChip:hover {
+  box-shadow: 0 6px 18px rgba(60, 100, 50, 0.3);
+  transform: translateY(-1px);
+}
+/* --------------------
+   🔷 완료 버튼 (하단)
+-------------------- */
+.submitButton {
+  padding: 12px 26px;
+  font-size: 16px;
+  border: 2px solid #4f6b45;
+  border-radius: 14px;
+  background: #5f8a55;
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+  min-width: 160px;
+  max-width: 220px;
+  transition: background 0.16s ease, transform 0.12s ease, box-shadow 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.submitButton:hover {
+  background: #557c4c;
+  border-color: #44653b;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.14);
+  transform: translateY(-1px);
+}
+
+.submitButton:active {
+  background: #496d41;
+  transform: translateY(0);
+}
+
+.actionRow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+  padding-right: 8px;
+}
+
+/* 체크 아이콘 크기 */
+.saveButton svg {
+  width: 22px;
+  height: 22px;
+  stroke: #0f381a;
+  stroke-width: 3px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* --------------------
+   🔷 오른쪽 선택 UI 컨테이너
+-------------------- */
+.itemContainer {
+  width: clamp(320px, 44vw, 480px);
+  height: 55vh;
+
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+
+  padding: 14px 12px;
+  overflow-y: auto;
+}
+
+/* --------------------
+   🔷 탭 버튼 디자인 (업그레이드 버전)
+-------------------- */
+.tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px auto 12px;
+}
+
+/* 기본 카드 탭 */
+.tab {
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 14px;
+  background: #f5f6f2;
+  color: #4a4f42;
+  border: 1.2px solid rgba(90, 110, 80, 0.22);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.18s ease;
+}
+
+/* hover */
+.tab:hover {
+  background: #f8faf7;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 선택된 탭 */
+.active {
+  background: #eef7ff; /* 탭은 파스텔 블루 */
+  color: #2f455f;
+  border-color: #7aa2cc;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* --------------------
+   🔷 아이템 목록
+-------------------- */
+.items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  gap: 12px;
+  justify-items: center;
+  align-items: center;
+  margin-top: 12px;
+  padding: 0 8px 6px;
+}
+
+/* 아이템 박스 */
+.itemBox {
+  position: relative;
+  width: 100px;
+  height: 100px;
+
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  padding: 12px;
+
+  cursor: pointer;
+  border: 2px solid transparent;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 0.2s ease;
+}
+
+.itemBox:hover {
+  background-color: #f0f2ed;
+}
+
+/* 선택된 아이템 */
+.selectedBox {
+  outline: 3px solid #869b73;
+  outline-offset: -2px;
+  background-color: #e4e9e1;
+  box-shadow: 0 0 12px #869b73;
+}
+
+/* 잠금 처리 */
+.lockedItem {
+  opacity: 0.55;
+}
+
+.itemImg {
+  width: 75%;
+  margin-top: 0;
+}
+
+/* 가격 오버레이 */
+.coinOverlay {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2px 6px;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.coinIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------
+   🔷 반응형
+-------------------- */
+@media (max-width: 1024px) {
+  .mainContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatar,
+  .itemContainer {
+    width: 100%;
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 600px) {
+  .items {
+    gap: 20px;
+  }
+
+  .tab {
+    padding: 10px 28px;
+    font-size: 16px;
+  }
+}
